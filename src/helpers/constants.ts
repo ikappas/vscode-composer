@@ -33,4 +33,5 @@ export class SettingNames {
     static SettingsPrefix: string = Constants.ExtensionName + '.';
     static Enabled: string = SettingNames.SettingsPrefix + 'enabled';
     static ExecutablePath: string = SettingNames.SettingsPrefix + 'executablePath';
+	static ProjectRoot: string = SettingNames.SettingsPrefix + 'projectRoot';
 }

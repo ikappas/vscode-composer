@@ -42,6 +42,7 @@ export class ComposerExtension extends Disposable {
 		if ( this.settings.enabled ) {
 			this.client = new ComposerClient({
 				executablePath: this.settings.executablePath,
+				projectRoot: this.settings.projectRoot,
 				env: process.env
 			});
 

@@ -22,12 +22,14 @@ abstract class BaseSettings {
 export class Settings extends BaseSettings {
     private _enabled: boolean;
     private _executablePath: string;
+	private _projectRoot: string;
 
     constructor() {
         super();
 
 		this._enabled = this.readSetting<boolean>(SettingNames.Enabled, true);
         this._executablePath = this.readSetting<string>(SettingNames.ExecutablePath, undefined);
+		this._projectRoot = this.readSetting<string>(SettingNames.ProjectRoot, undefined);
     }
 
 	public get enabled(): boolean {
@@ -37,4 +39,8 @@ export class Settings extends BaseSettings {
     public get executablePath(): string {
         return this._executablePath;
     }
+
+	public get projectRoot(): string {
+		return this._projectRoot;
+	}
 }

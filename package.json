@@ -60,6 +60,14 @@
 					],
 					"default": null,
 					"description": "Path to the composer executable."
+				},
+				"composer.projectRoot" : {
+					"type" :[
+						"string",
+						"null"
+					],
+					"default": null,
+					"description": "Where your composer.json file is located."
 				}
 			}
 		},
