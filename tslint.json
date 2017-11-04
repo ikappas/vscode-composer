@@ -12,7 +12,10 @@
 		"no-unexternalized-strings": [
 			true,
 			{
-				"signatures": ["localize", "nls.localize"],
+				"signatures": [
+					"localize",
+					"nls.localize"
+				],
 				"keyIndex": 0,
 				"messageIndex": 1
 			}
