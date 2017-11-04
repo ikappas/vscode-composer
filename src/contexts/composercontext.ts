@@ -14,7 +14,7 @@ export class ComposerContext {
         this._isComposerProject = false;
         if (typeof(rootPath) !== 'undefined') {
 			let composerJsonPath = path.join(rootPath, 'composer.json');
-			fs.access( composerJsonPath, (err) => {
+			fs.access( composerJsonPath, () => {
 				this._composerJsonPath = composerJsonPath;
 				this._isComposerProject = true;
 			});

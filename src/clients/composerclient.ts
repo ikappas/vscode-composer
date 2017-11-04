@@ -4,13 +4,10 @@
 'use strict';
 
 import { workspace } from 'vscode';
-import { IExecutionResult, exec, stream } from '../base/common/execution';
+import { IExecutionResult, exec, stream, SpawnOptions } from '../helpers/execution';
 import { spawn, ChildProcess } from 'child_process';
-import { encodingExists } from '../base/node/encoding';
 import { Strings } from '../helpers/strings';
-
-import objects = require('../base/common/objects');
-import strings = require('../base/common/strings');
+import iconv = require('iconv-lite');
 
 export interface ComposerOptions {
 	executablePath:string;
@@ -29,7 +26,7 @@ export class ComposerClient {
 		this.executablePath = options.executablePath;
 
 		const encoding = options.defaultEncoding || 'utf8';
-		this.defaultEncoding = encodingExists(encoding) ? encoding : 'utf8';
+		this.defaultEncoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
 
 		this.env = options.env || {};
 		this.outputListeners = [];
@@ -38,14 +35,14 @@ export class ComposerClient {
 	/**
 	 * Short information about Composer.
 	 */
-  	public about(): Promise<IExecutionResult> {
+  	public async about(): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['about']);
 	}
 
 	/**
 	 * Create an archive of this composer package.
 	 */
-	public archive(...args:string[]): Promise<IExecutionResult> {
+	public async archive(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['archive'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
@@ -62,7 +59,7 @@ export class ComposerClient {
 	/**
 	 * Clears composer's internal package cache.
 	 */
-	public clearCache(): Promise<IExecutionResult> {
+	public async clearCache(): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['clear-cache']);
 	}
 
@@ -83,7 +80,7 @@ export class ComposerClient {
 	/**
 	 * Shows which packages cause the given package to be installed.
 	 */
-	public depends(pkg:string, recursive=false, tree=false) {
+	public depends(_pkg:string, _recursive=false, _tree=false) {
 		// TODO: implement "depends".
 	}
 
@@ -100,17 +97,17 @@ export class ComposerClient {
 	/**
 	 * Dumps the autoloader.
 	 */
-	public dumpAutoload(...args:string[]): Promise<IExecutionResult> {
+	public async dumpAutoload(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['dump-autoload'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.defaultEncoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Displays help for a command.
 	 */
-	public help(command:string): Promise<IExecutionResult> {
+	public async help(command:string): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['help', command]);
 	}
 
@@ -124,14 +121,14 @@ export class ComposerClient {
 	/**
 	 * Creates a basic composer.json file in current directory.
 	 */
-	public init(...args:string[]): Promise<IExecutionResult> {
+	public async init(...args:string[]): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['init'].concat(args));
 	}
 
 	/**
 	 * Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
 	 */
-	public install(): Promise<IExecutionResult> {
+	public async install(): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['install']);
 		return stream(child, (output) => {
 			this.log(output);
@@ -141,14 +138,14 @@ export class ComposerClient {
 	/**
 	 * Show information about licenses of dependencies.
 	 */
-	public licenses(): Promise<IExecutionResult> {
+	public async licenses(): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['licenses']);
 	}
 
 	/**
 	 * Shows which packages prevent the given package from being installed
 	 */
-	public prohibits(...args:string[]): Promise<IExecutionResult> {
+	public async prohibits(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['prohibits'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
@@ -158,7 +155,7 @@ export class ComposerClient {
 	/**
 	 * Adds required packages to your composer.json and installs them.
 	 */
-	public require(...args:string[]): Promise<IExecutionResult> {
+	public async require(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['require'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
@@ -168,7 +165,7 @@ export class ComposerClient {
 	/**
 	 * Removes a package from the require or require-dev.
 	 */
-	public remove(...args:string[]): Promise<IExecutionResult> {
+	public async remove(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['remove'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
@@ -178,7 +175,7 @@ export class ComposerClient {
 	/**
 	 * Run the scripts defined in composer.json.
 	 */
-	public runScript(...args:string[]): Promise<IExecutionResult> {
+	public async runScript(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['run-script'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
@@ -195,35 +192,35 @@ export class ComposerClient {
 	/**
 	 * Updates composer.phar to the latest version.
 	 */
-	public selfUpdate(): Promise<IExecutionResult> {
+	public async selfUpdate(): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['self-update']);
 	}
 
 	/**
 	 * Show information about packages.
 	 */
-	public show(...args:string[]): Promise<IExecutionResult> {
+	public async show(...args:string[]): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['show'].concat(args));
 	}
 
 	/**
 	 * Show a list of locally modified packages.
 	 */
-	public status(): Promise<IExecutionResult> {
+	public async status(): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['status']);
 	}
 
 	/**
 	 * Show package suggestions.
 	 */
-	public suggests(): Promise<IExecutionResult> {
+	public async suggests(): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['suggests']);
 	}
 
 	/**
 	 * Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.
 	 */
-	public update(): Promise<IExecutionResult> {
+	public async update(): Promise<IExecutionResult> {
 		const child = this.stream(workspace.rootPath, ['update']);
 		return stream(child, (output) => {
 			this.log(output);
@@ -243,35 +240,35 @@ export class ComposerClient {
 	/**
 	 * Shows the composer version.
 	 */
-	public version(): Promise<IExecutionResult> {
+	public async version(): Promise<IExecutionResult> {
 		return this.run(workspace.rootPath, ['--version']);
 	}
 
 	/**
 	 * Shows which packages cause the given package to be installed.
 	 */
-	public why(pkg:string) {
+	public why(_pkg:string) {
 		// TODO: Implement "why".
 	}
 
 	/**
 	 * Shows which packages prevent the given package from being installed.
 	 */
-	public whyNot(pkg:string) {
+	public whyNot(_pkg:string) {
 		// TODO: Implement "why-not".
 	}
 
-	public run(cwd: string, args: string[], options: any = {}): Promise<IExecutionResult> {
-		options = objects.assign({ cwd: cwd }, options || {});
+	public async run(cwd: string, args: string[], options: any = {}): Promise<IExecutionResult> {
+		options = Object.assign({ cwd: cwd }, options || {});
 		return this.exec(args, options);
 	}
 
 	public stream(cwd: string, args: string[], options: any = {}): ChildProcess {
-		options = objects.assign({ cwd: cwd }, options || {});
+		options = Object.assign({ cwd: cwd }, options || {});
 		return this.spawn(args, options);
 	}
 
-	private exec(args: string[], options: any = {}): Promise<IExecutionResult> {
+	private async exec(args: string[], options: any = {}): Promise<IExecutionResult> {
 		const child = this.spawn(args, options);
 
 		if (options.input) {
@@ -294,7 +291,7 @@ export class ComposerClient {
 		});
 	}
 
-	public spawn(args: string[], options: any = {}): ChildProcess {
+	public spawn(args: string[], options: SpawnOptions = {}): ChildProcess {
 		if (!this.executablePath) {
 			throw new Error(Strings.ComposerNotFound);
 		}
@@ -307,11 +304,11 @@ export class ComposerClient {
 			options.stdio = ['ignore', null, null]; // Unless provided, ignore stdin and leave default streams for stdout and stderr
 		}
 
-		options.env = objects.assign({}, options.env || {});
-		options.env = objects.assign(options.env, this.env);
+		options.env = Object.assign({}, options.env || {});
+		options.env = Object.assign(options.env, this.env);
 
 		if (options.log !== false) {
-			this.log(strings.format(Strings.ExecutingCommand + '\n\n', args.join(' ')));
+			this.log(String.format(Strings.ExecutingCommand + '\n\n', args.join(' ')));
 		}
 
 		return spawn(this.executablePath, args, options);

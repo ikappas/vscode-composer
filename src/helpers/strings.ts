@@ -37,3 +37,42 @@ export class Strings {
     static ComposerProjectRequired: string = 'Open a folder with a composer project in order to access composer features.';
 }
 /* tslint:enable:variable-name */
+
+declare global {
+	interface StringConstructor {
+		/**
+		 * Helper to produce a string with a variable number of arguments. Insert variable segments
+		 * into the string using the {n} notation where N is the index of the argument following the string.
+		 * @param value string to which formatting is applied
+		 * @param args replacements for {n}-entries
+		 */
+		format(value: string, ...args: any[]): string;
+
+		/**
+		 * The empty string.
+		 */
+		Empty: string;
+
+		/**
+		 * The space string.
+		 */
+		Space: string;
+	}
+}
+
+const _formatRegexp = /{(\d+)}/g;
+
+String.Empty = '';
+String.Space = ' ';
+
+String.format = (value: string, ...args: any[]): string => {
+	if (args.length === 0) {
+		return value;
+	}
+	return value.replace(_formatRegexp, function (match, group) {
+		let idx = parseInt(group, 10);
+		return isNaN(idx) || idx < 0 || idx >= args.length ?
+			match :
+			args[idx];
+	});
+};
