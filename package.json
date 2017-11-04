@@ -1,148 +1,151 @@
 {
-    "name": "composer",
-    "displayName": "Composer",
-    "description": "PHP Composer for Visual Studio Code",
-    "version": "0.5.0",
-    "author": "Ioannis Kappas",
-    "publisher": "ikappas",
-    "license": "MIT",
-	"icon": "composer.png",
-    "galleryBanner": {
-		"color": "#6082bb",
-		"theme": "dark"
-	},
-    "homepage": "https://github.com/ikappas/vscode-composer/blob/master/README.md",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ikappas/vscode-composer.git"
-	},
-	"bugs": {
-		"url": "https://github.com/ikappas/vscode-composer/issues"
-	},
-    "categories": [
-        "Other"
+  "name": "composer",
+  "displayName": "Composer",
+  "description": "PHP Composer for Visual Studio Code",
+  "version": "0.5.0",
+  "author": "Ioannis Kappas",
+  "publisher": "ikappas",
+  "license": "MIT",
+  "icon": "composer.png",
+  "galleryBanner": {
+    "color": "#6082bb",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/ikappas/vscode-composer/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ikappas/vscode-composer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ikappas/vscode-composer/issues"
+  },
+  "categories": [
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.16.0"
+  },
+  "activationEvents": [
+    "onCommand:composer.About",
+    "onCommand:composer.Archive",
+    "onCommand:composer.ClearCache",
+    "onCommand:composer.Diagnose",
+    "onCommand:composer.DumpAutoload",
+    "onCommand:composer.Install",
+    "onCommand:composer.Remove",
+    "onCommand:composer.Require",
+    "onCommand:composer.RunScript",
+    "onCommand:composer.SelfUpdate",
+    "onCommand:composer.Show",
+    "onCommand:composer.Status",
+    "onCommand:composer.Update",
+    "onCommand:composer.Validate",
+    "onCommand:composer.Version"
+  ],
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Composer Dependency Manager for PHP Configuration",
+      "properties": {
+        "composer.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Is composer enabled."
+        },
+        "composer.executablePath": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Path to the composer executable."
+        }
+      }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": "composer.json",
+        "url": "http://json.schemastore.org/composer"
+      }
     ],
-    "engines": {
-        "vscode": "^1.0.0"
-    },
-    "activationEvents": [
-        "onCommand:composer.About",
-        "onCommand:composer.Archive",
-        "onCommand:composer.ClearCache",
-        "onCommand:composer.Diagnose",
-        "onCommand:composer.DumpAutoload",
-        "onCommand:composer.Install",
-        "onCommand:composer.Remove",
-        "onCommand:composer.Require",
-        "onCommand:composer.RunScript",
-        "onCommand:composer.SelfUpdate",
-        "onCommand:composer.Show",
-        "onCommand:composer.Status",
-        "onCommand:composer.Update",
-        "onCommand:composer.Validate",
-        "onCommand:composer.Version"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "configuration": {
-			"type": "object",
-			"title": "Composer Dependency Manager for PHP Configuration",
-			"properties": {
-				"composer.enabled": {
-					"type": "boolean",
-					"default": true,
-					"description": "Is composer enabled."
-				},
-				"composer.executablePath": {
-					"type": [
-						"string",
-						"null"
-					],
-					"default": null,
-					"description": "Path to the composer executable."
-				}
-			}
-		},
-        "jsonValidation": [
-            {
-                "fileMatch": "composer.json",
-                "url": "http://json.schemastore.org/composer"
-            }
-        ],
-        "commands": [
-            {
-                "command": "composer.About",
-                "title": "Composer: About"
-            },
-            {
-                "command": "composer.Archive",
-                "title": "Composer: Archive"
-            },
-            {
-                "command": "composer.ClearCache",
-                "title": "Composer: Clear Cache"
-            },
-            {
-                "command": "composer.Diagnose",
-                "title": "Composer: Diagnose"
-            },
-            {
-                "command": "composer.DumpAutoload",
-                "title": "Composer: Dump Autoloader"
-            },
-
-            {
-                "command": "composer.Install",
-                "title": "Composer: Install"
-            },
-            {
-                "command": "composer.Remove",
-                "title": "Composer: Remove"
-            },
-            {
-                "command": "composer.Require",
-                "title": "Composer: Require"
-            },
-            {
-                "command": "composer.RunScript",
-                "title": "Composer: Run Script"
-            },
-            {
-                "command": "composer.SelfUpdate",
-                "title": "Composer: Self Update"
-            },
-            {
-                "command": "composer.Show",
-                "title": "Composer: Show"
-            },
-            {
-                "command": "composer.Status",
-                "title": "Composer: Status"
-            },
-            {
-                "command": "composer.Update",
-                "title": "Composer: Update"
-            },
-            {
-                "command": "composer.Validate",
-                "title": "Composer: Validate"
-            },
-            {
-                "command": "composer.Version",
-                "title": "Composer: Version"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "dependencies": {
-        "iconv-lite": "0.4.13"
-    },
-    "devDependencies": {
-        "typescript": "^1.8.5",
-        "vscode": "^0.11.0"
-    }
+    "commands": [
+      {
+        "command": "composer.About",
+        "title": "Composer: About"
+      },
+      {
+        "command": "composer.Archive",
+        "title": "Composer: Archive"
+      },
+      {
+        "command": "composer.ClearCache",
+        "title": "Composer: Clear Cache"
+      },
+      {
+        "command": "composer.Diagnose",
+        "title": "Composer: Diagnose"
+      },
+      {
+        "command": "composer.DumpAutoload",
+        "title": "Composer: Dump Autoloader"
+      },
+      {
+        "command": "composer.Install",
+        "title": "Composer: Install"
+      },
+      {
+        "command": "composer.Remove",
+        "title": "Composer: Remove"
+      },
+      {
+        "command": "composer.Require",
+        "title": "Composer: Require"
+      },
+      {
+        "command": "composer.RunScript",
+        "title": "Composer: Run Script"
+      },
+      {
+        "command": "composer.SelfUpdate",
+        "title": "Composer: Self Update"
+      },
+      {
+        "command": "composer.Show",
+        "title": "Composer: Show"
+      },
+      {
+        "command": "composer.Status",
+        "title": "Composer: Status"
+      },
+      {
+        "command": "composer.Update",
+        "title": "Composer: Update"
+      },
+      {
+        "command": "composer.Validate",
+        "title": "Composer: Validate"
+      },
+      {
+        "command": "composer.Version",
+        "title": "Composer: Version"
+      }
+    ]
+  },
+  "main": "./out/src/extension",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.4.19"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.44",
+    "@types/node": "^6.0.90",
+    "@types/iconv-lite": "^0.0.1",
+    "typescript": "^2.6.1",
+    "vscode": "^1.1.6"
+  }
 }
