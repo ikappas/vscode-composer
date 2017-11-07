@@ -6,6 +6,7 @@
 import { IDisposable, toDisposable, dispose } from './lifecycle';
 import * as cp from 'child_process';
 import iconv = require('iconv-lite');
+import { ComposerError, ComposerErrorCodes } from './errors';
 
 export interface IExecutionResult {
 	exitCode: number;
@@ -15,13 +16,13 @@ export interface IExecutionResult {
 
 function cpErrorHandler(cb: (reason?: any) => void): (reason?: any) => void {
 	return err => {
-		// if (/ENOENT/.test(err.message)) {
-		// 	err = new GitError({
-		// 		error: err,
-		// 		message: 'Failed to execute git (ENOENT)',
-		// 		gitErrorCode: GitErrorCodes.NotAGitRepository
-		// 	});
-		// }
+		if (/ENOENT/.test(err.message)) {
+			err = new ComposerError({
+				error: err,
+				message: 'Failed to execute composer (ENOENT)',
+				composerErrorCode: ComposerErrorCodes.NotAComposerRepository
+			});
+		}
 
 		cb(err);
 	};
