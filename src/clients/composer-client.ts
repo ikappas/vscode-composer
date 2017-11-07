@@ -295,7 +295,7 @@ export class ComposerClient {
 		});
 	}
 
-	public spawn(args: string[], options: SpawnOptions = {}): ChildProcess {
+	protected spawn(args: string[], options: SpawnOptions = {}): ChildProcess {
 		if (!this.executablePath) {
 			throw new Error(Strings.ComposerNotFound);
 		}
