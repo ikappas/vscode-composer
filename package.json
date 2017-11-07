@@ -20,7 +20,8 @@
     "url": "https://github.com/ikappas/vscode-composer/issues"
   },
   "categories": [
-    "Other"
+    "Languages",
+    "Linters"
   ],
   "engines": {
     "vscode": "^1.16.0"
