@@ -48,7 +48,7 @@
       "title": "Composer Dependency Manager for PHP Configuration",
       "properties": {
         "composer.enabled": {
-          "scope": "resource",
+          "scope": "window",
           "type": "boolean",
           "default": true,
           "description": "Is composer enabled."
