@@ -11,8 +11,8 @@ import { Settings } from './helpers/settings';
 import { CommandNames } from './helpers/constants';
 import { Strings } from './helpers/strings';
 import { Constants } from './helpers/constants';
-import { ComposerContext } from './contexts/composercontext';
-import { ComposerClient } from './clients/composerclient';
+import { ComposerContext } from './contexts/composer-context';
+import { ComposerClient } from './clients/composer-client';
 // import * as strings from './base/common/strings';
 
 export class ComposerExtension extends Disposable {
@@ -193,9 +193,8 @@ export class ComposerExtension extends Disposable {
 	 * @param command A unique identifier for the command.
 	 * @param callback A command handler function.
 	 * @param thisArg The `this` context used when invoking the handler function.
-	 * @return Disposable which unregisters this command on disposal.
 	 */
-	private registerCommand(command: string, callback: (...args: any[]) => any, thisArg?: any) {
+	private registerCommand(command: string, callback: (...args: any[]) => any, thisArg?: any): void {
 		this.disposables.push(commands.registerCommand(command, this.safeExecute( callback ), thisArg));
 	}
 }

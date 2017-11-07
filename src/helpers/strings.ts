@@ -29,7 +29,7 @@ export class Strings {
     static ComposerRunScriptInput: string = '';
     static ComposerRunScriptPlaceHolder: string = '[options] [--] [<script>] [<args>] ...';
 
-    static CommandCompletedSuccessfully: string = 'Command completed successufully.';
+	static CommandCompletedSuccessfully: string = 'Command completed successfully.';
     static CommandCompletedWithErrors: string = 'Command completed with errors.';
 
     // Errors
