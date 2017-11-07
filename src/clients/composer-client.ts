@@ -76,7 +76,7 @@ export class ComposerClient {
 	/**
 	 * Create an archive of this composer package.
 	 */
-	public async archive(...args:string[]): Promise<IExecutionResult> {
+	public async archive(...args: string[]): Promise<IExecutionResult> {
 		return this.stream(['archive'].concat(args));
 	}
 
@@ -137,14 +137,14 @@ export class ComposerClient {
 	/**
 	 * Dumps the autoloader.
 	 */
-	public async dumpAutoload(...args:string[]): Promise<IExecutionResult> {
+	public async dumpAutoload(...args: string[]): Promise<IExecutionResult> {
 		return this.stream(['dump-autoload'].concat(args));
 	}
 
 	/**
 	 * Displays help for a command.
 	 */
-	public async help(command:string): Promise<IExecutionResult> {
+	public async help(command: string): Promise<IExecutionResult> {
 		return this.run(['help', command]);
 	}
 
@@ -161,7 +161,7 @@ export class ComposerClient {
 	/**
 	 * Creates a basic composer.json file in current directory.
 	 */
-	public async init(...args:string[]): Promise<IExecutionResult> {
+	public async init(...args: string[]): Promise<IExecutionResult> {
 		return this.run(['init'].concat(args));
 	}
 
@@ -182,28 +182,28 @@ export class ComposerClient {
 	/**
 	 * Shows which packages prevent the given package from being installed
 	 */
-	public async prohibits(...args:string[]): Promise<IExecutionResult> {
+	public async prohibits(...args: string[]): Promise<IExecutionResult> {
 		return this.stream(['prohibits'].concat(args));
 	}
 
 	/**
 	 * Adds required packages to your composer.json and installs them.
 	 */
-	public async require(...args:string[]): Promise<IExecutionResult> {
+	public async require(...args: string[]): Promise<IExecutionResult> {
 		return this.stream(['require'].concat(args));
 	}
 
 	/**
 	 * Removes a package from the require or require-dev.
 	 */
-	public async remove(...args:string[]): Promise<IExecutionResult> {
+	public async remove(...args: string[]): Promise<IExecutionResult> {
 		return this.stream(['remove'].concat(args));
 	}
 
 	/**
 	 * Run the scripts defined in composer.json.
 	 */
-	public async runScript(...args:string[]): Promise<IExecutionResult> {
+	public async runScript(...args: string[]): Promise<IExecutionResult> {
 		return this.stream(['run-script'].concat(args));
 	}
 
@@ -227,7 +227,7 @@ export class ComposerClient {
 	/**
 	 * Show information about packages.
 	 */
-	public async show(...args:string[]): Promise<IExecutionResult> {
+	public async show(...args: string[]): Promise<IExecutionResult> {
 		return this.run(['show'].concat(args));
 	}
 
