@@ -1,5 +1,9 @@
 # vscode-composer
 
+[![Current Version](https://vsmarketplacebadge.apphb.com/version/ikappas.composer.svg)](https://marketplace.visualstudio.com/items?itemName=ikappas.composer)
+[![Install Count](https://vsmarketplacebadge.apphb.com/installs/ikappas.composer.svg)](https://marketplace.visualstudio.com/items?itemName=ikappas.composer)
+[![Open Issues](https://vsmarketplacebadge.apphb.com/rating/ikappas.composer.svg)](https://marketplace.visualstudio.com/items?itemName=ikappas.composer)
+
 This [Visual Studio Code](https://code.visualstudio.com/) plugin provides an interface to [Composer](https://getcomposer.org/) dependency manager for PHP.
 It also provides schema validation for `composer.json` configuration files.
 
