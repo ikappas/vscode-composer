@@ -16,20 +16,27 @@ export interface ComposerOptions {
 }
 
 export class ComposerClient {
-	public executablePath: string;
+	private _executablePath: string;
 	public env: any;
 	private defaultEncoding: string;
 	private outputListeners: { (output: string): void; }[];
 
 	constructor(options: ComposerOptions) {
 
-		this.executablePath = options.executablePath;
+		this._executablePath = options.executablePath;
 
 		const encoding = options.defaultEncoding || 'utf8';
 		this.defaultEncoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
 
 		this.env = options.env || {};
 		this.outputListeners = [];
+	}
+
+	/**
+	 * Get the composer executable path.
+	 */
+	public get executablePath() {
+		return this._executablePath;
 	}
 
 	/**
