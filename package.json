@@ -23,6 +23,12 @@
     "Languages",
     "Linters"
   ],
+  "keywords": [
+    "php",
+    "composer",
+    "dependency",
+    "manager"
+  ],
   "engines": {
     "vscode": "^1.16.0"
   },
