@@ -6,6 +6,7 @@
 /* tslint:disable:variable-name */
 export class Strings {
 
+	static WorkingDirectory: string = 'Working Directory: {0}';
     static ExecutingCommand: string =  'Executing: composer {0}';
 
     static InputPackageName: string = 'Input package name';
