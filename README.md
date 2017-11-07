@@ -54,6 +54,28 @@ Example user settings.json on Windows:
 
 > ** Important: ** You will be unable to use this plugin unless you configure this setting before first use.
 
+### **composer.workingPath**
+
+[ Optional | **Default**: `null` ]
+
+Use this setting to specify the absolute or workspace relative path to your composer.json. If not specified the workspace root path is used as default.
+
+Example user settings.json on Mac/Linux:
+
+```
+{
+    "composer.workingPath": "/projects/project-root/project-sub-folder"
+}
+```
+
+Example user settings.json on Windows:
+
+```
+{
+    "composer.workingPath": "C:\\Projects\\ProjectRoot\\ProjectSubFolder"
+}
+```
+
 ## Usage
 All composer commands are available through the Command Pallet using `F1`.
 

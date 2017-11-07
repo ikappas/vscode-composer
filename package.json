@@ -61,6 +61,15 @@
           ],
           "default": null,
           "description": "Path to the composer executable."
+        },
+        "composer.workingPath": {
+          "scope": "resource",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Path to the composer.json file."
         }
       }
     },
