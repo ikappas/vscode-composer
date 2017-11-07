@@ -3,7 +3,6 @@
  *--------------------------------------------------------*/
 'use strict';
 
-import { workspace } from 'vscode';
 import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
 import { ComposerError } from '../helpers/errors';
 import { spawn, ChildProcess } from 'child_process';
@@ -12,6 +11,7 @@ import iconv = require('iconv-lite');
 
 export interface ComposerOptions {
 	executablePath: string;
+	workingPath: string;
 	encoding?: string;
 	env?: any;
 }
@@ -27,7 +27,7 @@ export class ComposerClient {
 	constructor(options: ComposerOptions) {
 
 		this._executablePath = options.executablePath;
-		this._workingPath = workspace.rootPath;
+		this._workingPath = options.workingPath;
 
 		const encoding = options.encoding || 'utf8';
 		this._encoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
