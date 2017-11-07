@@ -17,6 +17,8 @@ export interface ComposerOptions {
 
 export class ComposerClient {
 	private _executablePath: string;
+	private _workingPath: string;
+
 	public env: any;
 	private defaultEncoding: string;
 	private outputListeners: { (output: string): void; }[];
@@ -24,6 +26,7 @@ export class ComposerClient {
 	constructor(options: ComposerOptions) {
 
 		this._executablePath = options.executablePath;
+		this._workingPath = workspace.rootPath;
 
 		const encoding = options.defaultEncoding || 'utf8';
 		this.defaultEncoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
@@ -40,17 +43,24 @@ export class ComposerClient {
 	}
 
 	/**
+	 * Get the composer working path.
+	 */
+	public get workingPath() {
+		return this._workingPath;
+	}
+
+	/**
 	 * Short information about Composer.
 	 */
   	public async about(): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['about']);
+		return this.run(this.workingPath, ['about']);
 	}
 
 	/**
 	 * Create an archive of this composer package.
 	 */
 	public async archive(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['archive'].concat(args));
+		const child = this.stream(this.workingPath, ['archive'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -67,7 +77,7 @@ export class ComposerClient {
 	 * Clears composer's internal package cache.
 	 */
 	public async clearCache(): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['clear-cache']);
+		return this.run(this.workingPath, ['clear-cache']);
 	}
 
 	/**
@@ -95,7 +105,7 @@ export class ComposerClient {
 	 * Diagnoses the system to identify common errors.
 	 */
 	public diagnose() {
-		const child = this.stream(workspace.rootPath, ['diagnose']);
+		const child = this.stream(this.workingPath, ['diagnose']);
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -105,7 +115,7 @@ export class ComposerClient {
 	 * Dumps the autoloader.
 	 */
 	public async dumpAutoload(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['dump-autoload'].concat(args));
+		const child = this.stream(this.workingPath, ['dump-autoload'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
 		}, this.defaultEncoding).then(r => { this.log('\n'); return r; });
@@ -115,7 +125,7 @@ export class ComposerClient {
 	 * Displays help for a command.
 	 */
 	public async help(command:string): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['help', command]);
+		return this.run(this.workingPath, ['help', command]);
 	}
 
 	/**
@@ -129,14 +139,14 @@ export class ComposerClient {
 	 * Creates a basic composer.json file in current directory.
 	 */
 	public async init(...args:string[]): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['init'].concat(args));
+		return this.run(this.workingPath, ['init'].concat(args));
 	}
 
 	/**
 	 * Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
 	 */
 	public async install(): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['install']);
+		const child = this.stream(this.workingPath, ['install']);
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -146,14 +156,14 @@ export class ComposerClient {
 	 * Show information about licenses of dependencies.
 	 */
 	public async licenses(): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['licenses']);
+		return this.run(this.workingPath, ['licenses']);
 	}
 
 	/**
 	 * Shows which packages prevent the given package from being installed
 	 */
 	public async prohibits(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['prohibits'].concat(args));
+		const child = this.stream(this.workingPath, ['prohibits'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -163,7 +173,7 @@ export class ComposerClient {
 	 * Adds required packages to your composer.json and installs them.
 	 */
 	public async require(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['require'].concat(args));
+		const child = this.stream(this.workingPath, ['require'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
 		});
@@ -173,7 +183,7 @@ export class ComposerClient {
 	 * Removes a package from the require or require-dev.
 	 */
 	public async remove(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['remove'].concat(args));
+		const child = this.stream(this.workingPath, ['remove'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -183,7 +193,7 @@ export class ComposerClient {
 	 * Run the scripts defined in composer.json.
 	 */
 	public async runScript(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['run-script'].concat(args));
+		const child = this.stream(this.workingPath, ['run-script'].concat(args));
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -200,35 +210,35 @@ export class ComposerClient {
 	 * Updates composer.phar to the latest version.
 	 */
 	public async selfUpdate(): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['self-update']);
+		return this.run(this.workingPath, ['self-update']);
 	}
 
 	/**
 	 * Show information about packages.
 	 */
 	public async show(...args:string[]): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['show'].concat(args));
+		return this.run(this.workingPath, ['show'].concat(args));
 	}
 
 	/**
 	 * Show a list of locally modified packages.
 	 */
 	public async status(): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['status']);
+		return this.run(this.workingPath, ['status']);
 	}
 
 	/**
 	 * Show package suggestions.
 	 */
 	public async suggests(): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['suggests']);
+		return this.run(this.workingPath, ['suggests']);
 	}
 
 	/**
 	 * Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.
 	 */
 	public async update(): Promise<IExecutionResult> {
-		const child = this.stream(workspace.rootPath, ['update']);
+		const child = this.stream(this.workingPath, ['update']);
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -238,7 +248,7 @@ export class ComposerClient {
 	 * Validates a composer.json and composer.lock
 	 */
 	public validate() {
-		const child = this.stream(workspace.rootPath, ['validate']);
+		const child = this.stream(this.workingPath, ['validate']);
 		return stream(child, (output) => {
 			this.log(output);
 		}).then(r => { this.log('\n'); return r; });
@@ -248,7 +258,7 @@ export class ComposerClient {
 	 * Shows the composer version.
 	 */
 	public async version(): Promise<IExecutionResult> {
-		return this.run(workspace.rootPath, ['--version']);
+		return this.run(this.workingPath, ['--version']);
 	}
 
 	/**
