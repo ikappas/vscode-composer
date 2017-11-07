@@ -255,7 +255,7 @@ export class ComposerClient {
 	/**
 	 * Validates a composer.json and composer.lock
 	 */
-	public validate() {
+	public async validate(): Promise<IExecutionResult>  {
 		return this.stream(['validate']);
 	}
 
