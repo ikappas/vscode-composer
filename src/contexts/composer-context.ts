@@ -7,25 +7,44 @@ import * as path from "path";
 import * as fs from "fs";
 
 export class ComposerContext {
-	private _composerJsonPath: string;
-	private _isComposerProject: boolean = false;
+	private _workingPath: string;
 
-	constructor(rootPath ?: string) {
-        this._isComposerProject = false;
-        if (typeof(rootPath) !== 'undefined') {
-			let composerJsonPath = path.join(rootPath, 'composer.json');
-			fs.access( composerJsonPath, () => {
-				this._composerJsonPath = composerJsonPath;
-				this._isComposerProject = true;
-			});
-        }
-    }
-
-	public get composerJsonPath(): string {
-		return this._composerJsonPath;
+	/**
+	 * Class Constructor.
+	 * @param workingPath The composer working path.
+	 */
+	constructor(workingPath?: string) {
+		this._workingPath = workingPath;
 	}
 
-	public get isComposerProject(): boolean {
-		return this._isComposerProject;
+	/**
+	 * Get the composer working path.
+	 */
+	public get workingPath(): string {
+		return this._workingPath;
+	}
+
+	/**
+	 * Get the composer.json path.
+	 */
+	public get composerJsonPath(): string {
+		try {
+			let composerJsonPath = fs.realpathSync(path.join(this.workingPath, 'composer.json'));
+			fs.accessSync(composerJsonPath);
+			return composerJsonPath;
+		} catch {
+			return null;
+		}
+	}
+
+	/**
+	 * Determine whether we have a composer project.
+	 */
+	public isComposerProject(): boolean {
+		try {
+			return this.composerJsonPath !== null;
+		} catch {
+			return false;
+		}
 	}
 }

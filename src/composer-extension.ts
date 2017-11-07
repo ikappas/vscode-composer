@@ -164,7 +164,7 @@ export class ComposerExtension extends Disposable {
 
 	private ensureComposerProject(func: (...args: any[]) => any): (...args: any[]) => any {
 		return (...args: any[]) => {
-			if (this.context.isComposerProject) {
+			if (this.context.isComposerProject()) {
 				return func.apply(this, args);
 			}
 			window.showInformationMessage(Strings.ComposerProjectRequired);
