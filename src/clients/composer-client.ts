@@ -4,7 +4,7 @@
 'use strict';
 
 import { workspace } from 'vscode';
-import { IExecutionResult, exec, stream, SpawnOptions } from '../helpers/execution';
+import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
 import { spawn, ChildProcess } from 'child_process';
 import { Strings } from '../helpers/strings';
 import iconv = require('iconv-lite');
@@ -57,6 +57,15 @@ export class ComposerClient {
 	}
 
 	/**
+	 * Get the stream output handler.
+	 */
+	protected get streamOutputHandler(): StreamOutput {
+		return (output: string): void => {
+			this.log(output);
+		};
+	}
+
+	/**
 	 * Short information about Composer.
 	 */
   	public async about(): Promise<IExecutionResult> {
@@ -68,9 +77,7 @@ export class ComposerClient {
 	 */
 	public async archive(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['archive'].concat(args), { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -113,9 +120,7 @@ export class ComposerClient {
 	 */
 	public diagnose() {
 		const child = this.stream(this.workingPath, ['diagnose'], { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -123,9 +128,7 @@ export class ComposerClient {
 	 */
 	public async dumpAutoload(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['dump-autoload'].concat(args), { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -154,9 +157,7 @@ export class ComposerClient {
 	 */
 	public async install(): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['install'], { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -171,9 +172,7 @@ export class ComposerClient {
 	 */
 	public async prohibits(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['prohibits'].concat(args), { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -181,9 +180,7 @@ export class ComposerClient {
 	 */
 	public async require(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['require'].concat(args), { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding);
+		return stream(child, this.streamOutputHandler, this.encoding);
 	}
 
 	/**
@@ -191,9 +188,7 @@ export class ComposerClient {
 	 */
 	public async remove(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['remove'].concat(args), { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -201,9 +196,7 @@ export class ComposerClient {
 	 */
 	public async runScript(...args:string[]): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['run-script'].concat(args), { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -246,9 +239,7 @@ export class ComposerClient {
 	 */
 	public async update(): Promise<IExecutionResult> {
 		const child = this.stream(this.workingPath, ['update'], { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -256,9 +247,7 @@ export class ComposerClient {
 	 */
 	public validate() {
 		const child = this.stream(this.workingPath, ['validate'], { encoding: this.encoding });
-		return stream(child, output => {
-			this.log(output);
-		}, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
