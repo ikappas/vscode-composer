@@ -272,7 +272,7 @@ export class ComposerClient {
 		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
-	private async exec(args: string[], options: any = {}): Promise<IExecutionResult> {
+	protected async exec(args: string[], options: any = {}): Promise<IExecutionResult> {
 		const child = this.spawn(args, options);
 
 		if (options.input) {
