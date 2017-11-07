@@ -308,6 +308,7 @@ export class ComposerClient {
 		options.env = Object.assign(options.env, this.env);
 
 		if (options.log !== false) {
+			this.log(String.format(Strings.WorkingDirectory + '\n', options.cwd));
 			this.log(String.format(Strings.ExecutingCommand + '\n\n', args.join(' ')));
 		}
 
