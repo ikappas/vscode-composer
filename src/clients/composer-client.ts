@@ -11,16 +11,16 @@ import iconv = require('iconv-lite');
 
 export interface ComposerOptions {
 	executablePath:string;
-	defaultEncoding?: string;
+	encoding?: string;
 	env?:any;
 }
 
 export class ComposerClient {
 	private _executablePath: string;
 	private _workingPath: string;
+	private _encoding: string;
 
 	public env: any;
-	private defaultEncoding: string;
 	private outputListeners: { (output: string): void; }[];
 
 	constructor(options: ComposerOptions) {
@@ -28,8 +28,8 @@ export class ComposerClient {
 		this._executablePath = options.executablePath;
 		this._workingPath = workspace.rootPath;
 
-		const encoding = options.defaultEncoding || 'utf8';
-		this.defaultEncoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
+		const encoding = options.encoding || 'utf8';
+		this._encoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
 
 		this.env = options.env || {};
 		this.outputListeners = [];
@@ -50,6 +50,13 @@ export class ComposerClient {
 	}
 
 	/**
+	 * Get the encoding to use.
+	 */
+	public get encoding() {
+		return this._encoding;
+	}
+
+	/**
 	 * Short information about Composer.
 	 */
   	public async about(): Promise<IExecutionResult> {
@@ -60,10 +67,10 @@ export class ComposerClient {
 	 * Create an archive of this composer package.
 	 */
 	public async archive(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['archive'].concat(args));
+		const child = this.stream(this.workingPath, ['archive'].concat(args), { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -77,7 +84,7 @@ export class ComposerClient {
 	 * Clears composer's internal package cache.
 	 */
 	public async clearCache(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['clear-cache']);
+		return this.run(this.workingPath, ['clear-cache'], { encoding: this.encoding });
 	}
 
 	/**
@@ -105,27 +112,27 @@ export class ComposerClient {
 	 * Diagnoses the system to identify common errors.
 	 */
 	public diagnose() {
-		const child = this.stream(this.workingPath, ['diagnose']);
+		const child = this.stream(this.workingPath, ['diagnose'], { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Dumps the autoloader.
 	 */
 	public async dumpAutoload(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['dump-autoload'].concat(args));
+		const child = this.stream(this.workingPath, ['dump-autoload'].concat(args), { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}, this.defaultEncoding).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Displays help for a command.
 	 */
 	public async help(command:string): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['help', command]);
+		return this.run(this.workingPath, ['help', command], { encoding: this.encoding });
 	}
 
 	/**
@@ -139,64 +146,64 @@ export class ComposerClient {
 	 * Creates a basic composer.json file in current directory.
 	 */
 	public async init(...args:string[]): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['init'].concat(args));
+		return this.run(this.workingPath, ['init'].concat(args), { encoding: this.encoding });
 	}
 
 	/**
 	 * Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
 	 */
 	public async install(): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['install']);
+		const child = this.stream(this.workingPath, ['install'], { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Show information about licenses of dependencies.
 	 */
 	public async licenses(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['licenses']);
+		return this.run(this.workingPath, ['licenses'], { encoding: this.encoding });
 	}
 
 	/**
 	 * Shows which packages prevent the given package from being installed
 	 */
 	public async prohibits(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['prohibits'].concat(args));
+		const child = this.stream(this.workingPath, ['prohibits'].concat(args), { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Adds required packages to your composer.json and installs them.
 	 */
 	public async require(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['require'].concat(args));
+		const child = this.stream(this.workingPath, ['require'].concat(args), { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		});
+		}, this.encoding);
 	}
 
 	/**
 	 * Removes a package from the require or require-dev.
 	 */
 	public async remove(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['remove'].concat(args));
+		const child = this.stream(this.workingPath, ['remove'].concat(args), { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Run the scripts defined in composer.json.
 	 */
 	public async runScript(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['run-script'].concat(args));
+		const child = this.stream(this.workingPath, ['run-script'].concat(args), { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
@@ -210,55 +217,55 @@ export class ComposerClient {
 	 * Updates composer.phar to the latest version.
 	 */
 	public async selfUpdate(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['self-update']);
+		return this.run(this.workingPath, ['self-update'], { encoding: this.encoding });
 	}
 
 	/**
 	 * Show information about packages.
 	 */
 	public async show(...args:string[]): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['show'].concat(args));
+		return this.run(this.workingPath, ['show'].concat(args), { encoding: this.encoding });
 	}
 
 	/**
 	 * Show a list of locally modified packages.
 	 */
 	public async status(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['status']);
+		return this.run(this.workingPath, ['status'], { encoding: this.encoding });
 	}
 
 	/**
 	 * Show package suggestions.
 	 */
 	public async suggests(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['suggests']);
+		return this.run(this.workingPath, ['suggests'], { encoding: this.encoding });
 	}
 
 	/**
 	 * Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.
 	 */
 	public async update(): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['update']);
+		const child = this.stream(this.workingPath, ['update'], { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Validates a composer.json and composer.lock
 	 */
 	public validate() {
-		const child = this.stream(this.workingPath, ['validate']);
+		const child = this.stream(this.workingPath, ['validate'], { encoding: this.encoding });
 		return stream(child, (output) => {
 			this.log(output);
-		}).then(r => { this.log('\n'); return r; });
+		}, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	/**
 	 * Shows the composer version.
 	 */
 	public async version(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['--version']);
+		return this.run(this.workingPath, ['--version'], { encoding: this.encoding });
 	}
 
 	/**
