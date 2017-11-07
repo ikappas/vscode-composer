@@ -130,7 +130,7 @@ export class ComposerClient {
 	/**
 	 * Diagnoses the system to identify common errors.
 	 */
-	public diagnose() {
+	public async diagnose(): Promise<IExecutionResult>  {
 		return this.stream(['diagnose']);
 	}
 
