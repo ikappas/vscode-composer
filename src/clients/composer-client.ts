@@ -76,8 +76,7 @@ export class ComposerClient {
 	 * Create an archive of this composer package.
 	 */
 	public async archive(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['archive'].concat(args), { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['archive'].concat(args));
 	}
 
 	/**
@@ -119,16 +118,14 @@ export class ComposerClient {
 	 * Diagnoses the system to identify common errors.
 	 */
 	public diagnose() {
-		const child = this.stream(this.workingPath, ['diagnose'], { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['diagnose']);
 	}
 
 	/**
 	 * Dumps the autoloader.
 	 */
 	public async dumpAutoload(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['dump-autoload'].concat(args), { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['dump-autoload'].concat(args));
 	}
 
 	/**
@@ -156,8 +153,7 @@ export class ComposerClient {
 	 * Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
 	 */
 	public async install(): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['install'], { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['install']);
 	}
 
 	/**
@@ -171,32 +167,28 @@ export class ComposerClient {
 	 * Shows which packages prevent the given package from being installed
 	 */
 	public async prohibits(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['prohibits'].concat(args), { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['prohibits'].concat(args));
 	}
 
 	/**
 	 * Adds required packages to your composer.json and installs them.
 	 */
 	public async require(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['require'].concat(args), { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding);
+		return this.stream(['require'].concat(args));
 	}
 
 	/**
 	 * Removes a package from the require or require-dev.
 	 */
 	public async remove(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['remove'].concat(args), { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['remove'].concat(args));
 	}
 
 	/**
 	 * Run the scripts defined in composer.json.
 	 */
 	public async runScript(...args:string[]): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['run-script'].concat(args), { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['run-script'].concat(args));
 	}
 
 	/**
@@ -238,16 +230,14 @@ export class ComposerClient {
 	 * Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.
 	 */
 	public async update(): Promise<IExecutionResult> {
-		const child = this.stream(this.workingPath, ['update'], { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['update']);
 	}
 
 	/**
 	 * Validates a composer.json and composer.lock
 	 */
 	public validate() {
-		const child = this.stream(this.workingPath, ['validate'], { encoding: this.encoding });
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return this.stream(['validate']);
 	}
 
 	/**
@@ -276,9 +266,10 @@ export class ComposerClient {
 		return this.exec(args, options);
 	}
 
-	public stream(cwd: string, args: string[], options: any = {}): ChildProcess {
-		options = Object.assign({ cwd: cwd }, options || {});
-		return this.spawn(args, options);
+	protected async stream(args: string[], options: any = {}): Promise<IExecutionResult> {
+		options = Object.assign({ cwd: this.workingPath, encoding: this.encoding }, options || {});
+		const child = this.spawn(args, options);
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
 	}
 
 	private async exec(args: string[], options: any = {}): Promise<IExecutionResult> {
