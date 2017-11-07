@@ -69,7 +69,7 @@ export class ComposerClient {
 	 * Short information about Composer.
 	 */
   	public async about(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['about']);
+		return this.run(['about']);
 	}
 
 	/**
@@ -91,7 +91,7 @@ export class ComposerClient {
 	 * Clears composer's internal package cache.
 	 */
 	public async clearCache(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['clear-cache'], { encoding: this.encoding });
+		return this.run(['clear-cache']);
 	}
 
 	/**
@@ -135,7 +135,7 @@ export class ComposerClient {
 	 * Displays help for a command.
 	 */
 	public async help(command:string): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['help', command], { encoding: this.encoding });
+		return this.run(['help', command]);
 	}
 
 	/**
@@ -149,7 +149,7 @@ export class ComposerClient {
 	 * Creates a basic composer.json file in current directory.
 	 */
 	public async init(...args:string[]): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['init'].concat(args), { encoding: this.encoding });
+		return this.run(['init'].concat(args));
 	}
 
 	/**
@@ -164,7 +164,7 @@ export class ComposerClient {
 	 * Show information about licenses of dependencies.
 	 */
 	public async licenses(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['licenses'], { encoding: this.encoding });
+		return this.run(['licenses']);
 	}
 
 	/**
@@ -210,28 +210,28 @@ export class ComposerClient {
 	 * Updates composer.phar to the latest version.
 	 */
 	public async selfUpdate(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['self-update'], { encoding: this.encoding });
+		return this.run(['self-update']);
 	}
 
 	/**
 	 * Show information about packages.
 	 */
 	public async show(...args:string[]): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['show'].concat(args), { encoding: this.encoding });
+		return this.run(['show'].concat(args));
 	}
 
 	/**
 	 * Show a list of locally modified packages.
 	 */
 	public async status(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['status'], { encoding: this.encoding });
+		return this.run(['status']);
 	}
 
 	/**
 	 * Show package suggestions.
 	 */
 	public async suggests(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['suggests'], { encoding: this.encoding });
+		return this.run(['suggests']);
 	}
 
 	/**
@@ -254,7 +254,7 @@ export class ComposerClient {
 	 * Shows the composer version.
 	 */
 	public async version(): Promise<IExecutionResult> {
-		return this.run(this.workingPath, ['--version'], { encoding: this.encoding });
+		return this.run(['--version']);
 	}
 
 	/**
@@ -271,8 +271,8 @@ export class ComposerClient {
 		// TODO: Implement "why-not".
 	}
 
-	public async run(cwd: string, args: string[], options: any = {}): Promise<IExecutionResult> {
-		options = Object.assign({ cwd: cwd }, options || {});
+	protected async run(args: string[], options: any = {}): Promise<IExecutionResult> {
+		options = Object.assign({ cwd: this.workingPath, encoding: this.encoding }, options || {});
 		return this.exec(args, options);
 	}
 
