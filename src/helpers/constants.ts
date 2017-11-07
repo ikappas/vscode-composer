@@ -5,12 +5,12 @@
 
 /* tslint:disable:variable-name */
 export class Constants {
-    static ExtensionName: string = 'composer';
+	static ExtensionName: string = 'composer';
 	static OutputChannel: string = 'Composer';
 }
 
 export class CommandNames {
-    static CommandPrefix: string = Constants.ExtensionName + '.';
+	static CommandPrefix: string = Constants.ExtensionName + '.';
 	static About: string = CommandNames.CommandPrefix + 'About';
 	static Archive: string = CommandNames.CommandPrefix + 'Archive';
 	static ClearCache: string = CommandNames.CommandPrefix + 'ClearCache';
@@ -30,7 +30,8 @@ export class CommandNames {
 }
 
 export class SettingNames {
-    static SettingsPrefix: string = Constants.ExtensionName + '.';
-    static Enabled: string = SettingNames.SettingsPrefix + 'enabled';
-    static ExecutablePath: string = SettingNames.SettingsPrefix + 'executablePath';
+	static SettingsPrefix: string = Constants.ExtensionName + '.';
+	static Enabled: string = SettingNames.SettingsPrefix + 'enabled';
+	static ExecutablePath: string = SettingNames.SettingsPrefix + 'executablePath';
+	static WorkingPath: string = SettingNames.SettingsPrefix + 'workingPath';
 }
