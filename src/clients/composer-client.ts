@@ -5,6 +5,7 @@
 
 import { workspace } from 'vscode';
 import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
+import { ComposerError } from '../helpers/errors';
 import { spawn, ChildProcess } from 'child_process';
 import { Strings } from '../helpers/strings';
 import iconv = require('iconv-lite');
@@ -82,8 +83,11 @@ export class ComposerClient {
 	/**
 	 * Opens the package's repository URL or homepage in your browser.
 	 */
-	public browse() {
+	public async browse(): Promise<IExecutionResult> {
 		// TODO: implement "browse".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'browse')
+		});
 	}
 
 	/**
@@ -96,22 +100,31 @@ export class ComposerClient {
 	/**
 	 * Set config options.
 	 */
-	public config() {
+	public async config(): Promise<IExecutionResult> {
 		// TODO: implement "config".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'config')
+		});
 	}
 
 	/**
 	 * Create new project from a package into given directory.
 	 */
-	public createProject() {
+	public async createProject(): Promise<IExecutionResult> {
 		// TODO: implement "create-project".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'create-project')
+		});
 	}
 
 	/**
 	 * Shows which packages cause the given package to be installed.
 	 */
-	public depends(_pkg: string, _recursive = false, _tree = false) {
+	public async depends(_pkg: string, _recursive = false, _tree = false) {
 		// TODO: implement "depends".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'depends')
+		});
 	}
 
 	/**
@@ -138,8 +151,11 @@ export class ComposerClient {
 	/**
 	 * Opens the package's repository URL or homepage in your browser.
 	 */
-	public home() {
+	public async home() {
 		// TODO: implement "home".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'home')
+		});
 	}
 
 	/**
@@ -194,8 +210,11 @@ export class ComposerClient {
 	/**
 	 * Search for packages.
 	 */
-	public search() {
+	public async search(): Promise<IExecutionResult> {
 		// TODO: Implement "search".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'search')
+		});
 	}
 
 	/**
@@ -250,15 +269,21 @@ export class ComposerClient {
 	/**
 	 * Shows which packages cause the given package to be installed.
 	 */
-	public why(_pkg:string) {
+	public async why(_pkg: string): Promise<IExecutionResult> {
 		// TODO: Implement "why".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'why')
+		});
 	}
 
 	/**
 	 * Shows which packages prevent the given package from being installed.
 	 */
-	public whyNot(_pkg:string) {
+	public async whyNot(_pkg: string): Promise<IExecutionResult> {
 		// TODO: Implement "why-not".
+		throw new ComposerError({
+			message: String.format(Strings.ComposerCommandNotImplemented, 'why-not')
+		});
 	}
 
 	protected async run(args: string[], options: any = {}): Promise<IExecutionResult> {

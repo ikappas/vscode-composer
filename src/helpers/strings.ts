@@ -34,8 +34,9 @@ export class Strings {
     static CommandCompletedWithErrors: string = 'Command completed with errors.';
 
     // Errors
-    static ComposerNotFound: string = 'Composer could not be found in the system.';
-    static ComposerProjectRequired: string = 'Open a folder with a composer project in order to access composer features.';
+	static ComposerNotFound: string = 'Composer could not be found in the system.';
+	static ComposerProjectRequired: string = 'Open a folder with a composer project in order to access composer features.';
+	static ComposerCommandNotImplemented: string = 'The composer "{0}" command is not implemented';
 }
 /* tslint:enable:variable-name */
 
