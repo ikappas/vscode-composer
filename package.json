@@ -48,11 +48,13 @@
       "title": "Composer Dependency Manager for PHP Configuration",
       "properties": {
         "composer.enabled": {
+          "scope": "resource",
           "type": "boolean",
           "default": true,
           "description": "Is composer enabled."
         },
         "composer.executablePath": {
+          "scope": "resource",
           "type": [
             "string",
             "null"
