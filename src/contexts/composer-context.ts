@@ -71,11 +71,11 @@ export class ComposerContext {
 	 */
 	public get client(): ComposerClient {
 		if (!this._client) {
-			this.client = new ComposerClient({
-				executablePath: this.settings.executablePath,
-				workingPath: this.workingPath,
-				env: process.env
-			});
+			this.client = new ComposerClient(
+				this.settings.executablePath,
+				this.workingPath,
+				process.env
+			);
 		}
 		return this._client;
 	}

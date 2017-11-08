@@ -9,13 +9,6 @@ import { spawn, ChildProcess } from 'child_process';
 import { Strings } from '../helpers/strings';
 import iconv = require('iconv-lite');
 
-export interface ComposerOptions {
-	executablePath: string;
-	workingPath: string;
-	encoding?: string;
-	env?: any;
-}
-
 /**
  * An event describing a transactional composer client change.
  */
@@ -35,15 +28,19 @@ export class ComposerClient {
 	public env: any;
 	private outputListeners: { (output: string): void; }[];
 
-	constructor(options: ComposerOptions) {
+	constructor(
+		executablePath: string,
+		workingPath: string,
+		env?: any,
+		encoding?: string
+	) {
+		this._executablePath = executablePath;
+		this._workingPath = workingPath;
 
-		this._executablePath = options.executablePath;
-		this._workingPath = options.workingPath;
-
-		const encoding = options.encoding || 'utf8';
+		encoding = encoding || 'utf8';
 		this._encoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
 
-		this.env = options.env || {};
+		this.env = env || {};
 		this.outputListeners = [];
 	}
 
