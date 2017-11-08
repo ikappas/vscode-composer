@@ -36,6 +36,12 @@ export class ComposerExtension extends Disposable {
 		})
 	}
 
+	// Reinitialize the extension when coming back online
+	public reinitialize(): void {
+		this.dispose();
+		this.initializeExtension();
+	}
+
 	private initializeExtension(): void {
 		this.contexts.clear();
 
@@ -57,106 +63,130 @@ export class ComposerExtension extends Disposable {
 		this.channel = window.createOutputChannel(Constants.OutputChannel);
 		this.disposables.push(this.channel);
 
-		this.initializeCommands();
+		this.registerCommands();
 	}
 
 	/**
 	 * Initialize Command handlers.
 	 */
-	private initializeCommands(): void {
-		this.registerCommand(CommandNames.About, context => {
-			this.reportExecutionResult(context.client.about());
-		});
-		this.registerCommand(CommandNames.Archive, context => {
-			window.showInputBox({ prompt: Strings.ComposerArchiveInput, placeHolder: Strings.ComposerArchivePlaceHolder }).then( pkg => {
-				if (typeof(pkg) !== 'undefined') {
+	private registerCommands(): void {
+		this.registerCommand(CommandNames.About, this.commandAbout);
+		this.registerCommand(CommandNames.Archive, this.commandArchive);
+		this.registerCommand(CommandNames.ClearCache, this.commandClearCache);
+		this.registerCommand(CommandNames.Diagnose, this.commandDiagnose);
+		this.registerCommand(CommandNames.DumpAutoload, this.commandDumpAutoload);
+		this.registerCommand(CommandNames.Install, this.ensureComposerProject(this.commandInstall));
+		this.registerCommand(CommandNames.Remove, this.ensureComposerProject(this.commandRemove));
+		this.registerCommand(CommandNames.Require, this.ensureComposerProject(this.commandRequire));
+		this.registerCommand(CommandNames.RunScript, this.ensureComposerProject(this.commandRunScript));
+		this.registerCommand(CommandNames.SelfUpdate, this.commandSelfUpdate);
+		this.registerCommand(CommandNames.Show, this.commandShow);
+		this.registerCommand(CommandNames.Status, this.ensureComposerProject(this.commandStatus));
+		this.registerCommand(CommandNames.Update, this.ensureComposerProject(this.commandUpdate));
+		this.registerCommand(CommandNames.Validate, this.ensureComposerProject(this.commandValidate));
+		this.registerCommand(CommandNames.Version, this.commandVersion);
+	}
 
-					let args = ( pkg !== String.Empty )
-							? pkg.split(String.Space)
-							: [];
+	protected commandAbout(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.about());
+	}
 
-					this.reportExecutionResult(<Promise<IExecutionResult>> context.client.archive.apply(context.client, args));
-				}
-			});
-		});
-		this.registerCommand(CommandNames.ClearCache, context => {
-			this.reportExecutionResult(context.client.clearCache());
-		});
-		this.registerCommand(CommandNames.Diagnose, context => {
-			this.reportExecutionResult(context.client.diagnose());
-		});
-		this.registerCommand(CommandNames.DumpAutoload, context => {
-			window.showInputBox({ prompt: Strings.ComposerDumpAutoloadInput, placeHolder: Strings.ComposerDumpAutoloadPlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined') {
+	protected commandArchive(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerArchiveInput, placeHolder: Strings.ComposerArchivePlaceHolder }).then(pkg => {
+			if (typeof (pkg) !== 'undefined') {
 
-					let args = ( options !== String.Empty )
-							? options.split(String.Space)
-							: [];
+				let args = (pkg !== String.Empty)
+					? pkg.split(String.Space)
+					: [];
 
-					this.reportExecutionResult(<Promise<IExecutionResult>> context.client.dumpAutoload.apply(context.client, args));
-				}
-			});
-		});
-		this.registerCommand(CommandNames.Install, this.ensureComposerProject(context => {
-			this.reportExecutionResult(context.client.install());
-		}));
-		this.registerCommand(CommandNames.Remove, this.ensureComposerProject(context => {
-			window.showInputBox({ prompt: Strings.ComposerRemoveInput, placeHolder: Strings.ComposerRemovePlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' && options !== String.Empty ) {
-					let args = options.split(String.Space);
-					this.reportExecutionResult(<Promise<IExecutionResult>> context.client.remove.apply(context.client, args));
-				}
-			});
-		}));
-		this.registerCommand(CommandNames.Require, this.ensureComposerProject(context => {
-			window.showInputBox({ prompt: Strings.ComposerRequireInput, placeHolder: Strings.ComposerRequirePlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' && options !== String.Empty ) {
-					let args = options.split(String.Space);
-					this.reportExecutionResult(<Promise<IExecutionResult>> context.client.require.apply(context.client, args));
-				}
-			});
-		}));
-		this.registerCommand(CommandNames.RunScript, this.ensureComposerProject(context => {
-			window.showInputBox({ prompt: Strings.ComposerRunScriptInput, placeHolder: Strings.ComposerRunScriptPlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' && options !== String.Empty ) {
-					let args = options.split(String.Space);
-					this.reportExecutionResult(<Promise<IExecutionResult>> context.client.runScript.apply(context.client, args));
-				}
-			});
-		}));
-		this.registerCommand(CommandNames.SelfUpdate, context => {
-			this.reportExecutionResult(context.client.selfUpdate());
-		});
-		this.registerCommand(CommandNames.Show, context => {
-			window.showInputBox({ prompt: Strings.ComposerShowInput, placeHolder: Strings.ComposerShowPlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' ) {
-
-					let args = ( options !== String.Empty )
-							? options.split(String.Space)
-							: [];
-
-					this.reportExecutionResult(<Promise<IExecutionResult>> context.client.show.apply(context.client, args));
-				}
-			});
-		});
-		this.registerCommand(CommandNames.Status, this.ensureComposerProject(context => {
-			context.client.status();
-		}));
-		this.registerCommand(CommandNames.Update, this.ensureComposerProject(context => {
-			this.reportExecutionResult(context.client.update());
-		}));
-		this.registerCommand(CommandNames.Validate, this.ensureComposerProject(context => {
-			this.reportExecutionResult(context.client.validate());
-		}));
-		this.registerCommand(CommandNames.Version, context => {
-			this.reportExecutionResult(context.client.version());
+				this.reportExecutionResult(context.client.archive.apply(context.client, args));
+			}
 		});
 	}
 
-	// Reinitialize the extension when coming back online
-	public reinitialize(): void {
-		this.dispose();
-		this.initializeExtension();
+	protected commandClearCache(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.clearCache());
+	}
+
+	protected commandDiagnose(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.diagnose());
+	}
+
+	protected commandDumpAutoload(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerDumpAutoloadInput, placeHolder: Strings.ComposerDumpAutoloadPlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined') {
+
+				let args = (options !== String.Empty)
+					? options.split(String.Space)
+					: [];
+
+				this.reportExecutionResult(context.client.dumpAutoload.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandInstall(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.install());
+	}
+
+	protected commandRemove(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerRemoveInput, placeHolder: Strings.ComposerRemovePlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined' && options !== String.Empty) {
+				let args = options.split(String.Space);
+				this.reportExecutionResult(context.client.remove.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandRequire(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerRequireInput, placeHolder: Strings.ComposerRequirePlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined' && options !== String.Empty) {
+				let args = options.split(String.Space);
+				this.reportExecutionResult(context.client.require.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandRunScript(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerRunScriptInput, placeHolder: Strings.ComposerRunScriptPlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined' && options !== String.Empty) {
+				let args = options.split(String.Space);
+				this.reportExecutionResult(context.client.runScript.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandSelfUpdate(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.selfUpdate());
+	}
+
+	protected commandShow(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerShowInput, placeHolder: Strings.ComposerShowPlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined') {
+
+				let args = (options !== String.Empty)
+					? options.split(String.Space)
+					: [];
+
+				this.reportExecutionResult(context.client.show.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandStatus(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.status());
+	}
+
+	protected commandUpdate(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.update());
+	}
+
+	protected commandValidate(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.validate());
+	}
+
+	protected commandVersion(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.version());
 	}
 
 	/**
