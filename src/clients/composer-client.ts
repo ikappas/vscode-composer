@@ -349,6 +349,14 @@ export class ComposerClient {
 			this.log(String.format(Strings.ExecutingCommand + '\n\n', args.join(' ')));
 		}
 
+		// Disable progress on specific commands
+		if (args[0] && ['install', 'update'].indexOf(args[0]) > -1) {
+			args.unshift('--no-progress');
+		}
+
+		// Disable ansi output
+		args.unshift('--ansi');
+
 		return spawn(this.executablePath, args, options);
 	}
 
