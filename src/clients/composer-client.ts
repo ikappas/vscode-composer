@@ -3,11 +3,13 @@
  *--------------------------------------------------------*/
 'use strict';
 
-import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
 import { ComposerError } from '../helpers/errors';
+import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
 import { spawn, ChildProcess } from 'child_process';
 import { Strings } from '../helpers/strings';
 import iconv = require('iconv-lite');
+import { EventEmitter } from 'events';
+import { IDisposable, toDisposable } from '../helpers/lifecycle';
 
 /**
  * An event describing a transactional composer client change.
@@ -24,9 +26,9 @@ export class ComposerClient {
 	private _executablePath: string;
 	private _workingPath: string;
 	private _encoding: string;
+	private _onOutput = new EventEmitter();
 
 	public env: any;
-	private outputListeners: { (output: string): void; }[];
 
 	constructor(
 		executablePath: string,
@@ -41,7 +43,6 @@ export class ComposerClient {
 		this._encoding = iconv.encodingExists(encoding) ? encoding : 'utf8';
 
 		this.env = env || {};
-		this.outputListeners = [];
 	}
 
 	/**
@@ -360,12 +361,19 @@ export class ComposerClient {
 		return spawn(this.executablePath, args, options);
 	}
 
-	public onOutput(listener: (output: string) => void): () => void {
-		this.outputListeners.push(listener);
-		return () => this.outputListeners.splice(this.outputListeners.indexOf(listener), 1);
+	/**
+	 * An event that is emitted when a composer settings object is set.
+	 */
+	public onOutput(listener: (output: string) => void): IDisposable {
+		this._onOutput.addListener('log', listener);
+		return toDisposable(() => this._onOutput.removeListener('log', listener));
 	}
 
+	/**
+	 * Log output.
+	 * @param output The output to log.
+	 */
 	private log(output: string): void {
-		this.outputListeners.forEach(l => l(output));
+		this._onOutput.emit('log', output);
 	}
 }

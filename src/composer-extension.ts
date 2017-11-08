@@ -53,7 +53,7 @@ export class ComposerExtension extends Disposable {
 				let context = new ComposerContext(folder);
 
 				context.onDidChangeClient( e => {
-					e.client.onOutput(o => { this.channel.append(o); });
+					this.disposables.push(e.client.onOutput(o => { this.channel.append(o); }));
 				})
 
 				this.contexts.set(folder.uri, context );
