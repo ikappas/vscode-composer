@@ -355,7 +355,7 @@ export class ComposerClient {
 		}
 
 		// Disable ansi output
-		args.unshift('--ansi');
+		args.unshift('--no-ansi');
 
 		return spawn(this.executablePath, args, options);
 	}
