@@ -35,6 +35,7 @@ export class Strings {
 
     // Errors
 	static ComposerNotFound: string = 'Composer could not be found in the system.';
+	static ComposerContextRequired: string = 'Please open a workspace folder to access composer features.';
 	static ComposerProjectRequired: string = 'Open a folder with a composer project in order to access composer features.';
 	static ComposerCommandNotImplemented: string = 'The composer "{0}" command is not implemented';
 }
