@@ -27,7 +27,8 @@
     "php",
     "composer",
     "dependency",
-    "manager"
+    "manager",
+    "multi-root ready"
   ],
   "engines": {
     "vscode": "^1.16.0"

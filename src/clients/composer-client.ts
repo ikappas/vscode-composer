@@ -16,6 +16,17 @@ export interface ComposerOptions {
 	env?: any;
 }
 
+/**
+ * An event describing a transactional composer client change.
+ */
+export interface ComposerClientChangeEvent {
+
+	/**
+	 * The affected settings.
+	 */
+	client: ComposerClient;
+}
+
 export class ComposerClient {
 	private _executablePath: string;
 	private _workingPath: string;

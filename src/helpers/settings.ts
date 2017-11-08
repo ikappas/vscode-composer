@@ -3,13 +3,47 @@
  *--------------------------------------------------------*/
 'use strict';
 
-import { workspace } from "vscode";
+import { workspace, Uri, WorkspaceConfiguration } from "vscode";
 import { SettingNames } from "./constants";
 
 abstract class BaseSettings {
+
+	/**
+	 * The resource for which the settings apply.
+	 */
+	private _resource : Uri;
+
+	/**
+	 * Class constructor.
+	 * @param resource The resource for which the settings apply.
+	 */
+	constructor(resource: Uri = undefined) {
+		this._resource = resource;
+	}
+
+	/**
+	 * Get the resource for which the settings apply.
+	 */
+	public get resource(): Uri {
+		return this._resource;
+	}
+
+	/**
+	 * Read the setting.
+	 *
+	 * @param name The name of the setting.
+	 * @param defaultValue The default value for the setting.
+	 */
 	protected readSetting<T>(name: string, defaultValue:T): T {
-		let configuration = workspace.getConfiguration();
-		let value = configuration.get<T>(name, undefined);
+		let config: WorkspaceConfiguration;
+		if (this.resource === null || this.resource === undefined ){
+			// Reading Window scoped configuration
+			config = workspace.getConfiguration();
+		} else {
+			// Reading Resource scoped configuration
+			config = workspace.getConfiguration('', this.resource);
+		}
+		let value = config.get<T>(name, undefined);
 
 		// If user specified a value, use it
 		if (value !== undefined && value !== null) {
@@ -19,21 +53,40 @@ abstract class BaseSettings {
 	}
 }
 
-export class Settings extends BaseSettings {
+export class ComposerGlobalSettings extends BaseSettings {
 	private _enabled: boolean;
-	private _executablePath: string;
-	private _workingPath: string;
 
 	constructor() {
 		super();
 
 		this._enabled = this.readSetting<boolean>(SettingNames.Enabled, true);
-		this._executablePath = this.readSetting<string>(SettingNames.ExecutablePath, undefined);
-		this._workingPath = this.readSetting<string>(SettingNames.WorkingPath, undefined);
 	}
 
 	public get enabled(): boolean {
 		return this._enabled;
+	}
+}
+
+/**
+ * An event describing a transactional composer global settings change.
+ */
+export interface ComposerGlobalSettingsChangeEvent {
+
+	/**
+	 * The affected settings.
+	 */
+	settings: ComposerGlobalSettings;
+}
+
+export class ComposerWorkspaceSettings extends BaseSettings {
+	private _executablePath: string;
+	private _workingPath: string;
+
+	constructor(resource: Uri) {
+		super(resource);
+
+		this._executablePath = this.readSetting<string>(SettingNames.ExecutablePath, undefined);
+		this._workingPath = this.readSetting<string>(SettingNames.WorkingPath, undefined);
 	}
 
 	public get executablePath(): string {
@@ -43,4 +96,15 @@ export class Settings extends BaseSettings {
 	public get workingPath(): string {
 		return this._workingPath;
 	}
+}
+
+/**
+ * An event describing a transactional composer workspace settings change.
+ */
+export interface ComposerWorkspaceSettingsChangeEvent {
+
+	/**
+	 * The affected settings.
+	 */
+	settings: ComposerWorkspaceSettings;
 }
