@@ -8,11 +8,10 @@
 import { Disposable, OutputChannel, window, workspace, commands, Uri, QuickPickItem } from 'vscode';
 import { IExecutionResult } from './helpers/execution';
 import { ComposerGlobalSettings } from './helpers/settings';
-import { CommandNames } from './helpers/constants';
 import { Strings } from './helpers/strings';
 import { Constants } from './helpers/constants';
 import { ComposerContext } from './contexts/composer-context';
-import { ComposerCommandHandler } from './helpers/commands';
+import { CommandNames, ComposerCommandHandler } from './helpers/commands';
 
 export class ComposerExtension extends Disposable {
 	private channel: OutputChannel;
