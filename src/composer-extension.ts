@@ -54,7 +54,13 @@ export class ComposerExtension extends Disposable {
 			});
 		}
 
-		// Register commands.
+		this.initializeCommands();
+	}
+
+	/**
+	 * Initialize Command handlers.
+	 */
+	private initializeCommands(): void {
 		this.registerCommand(CommandNames.About, () => {
 			this.reportExecutionResult(this.client.about());
 		});
