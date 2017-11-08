@@ -4,7 +4,14 @@
 'use strict';
 
 import { workspace, Uri, WorkspaceConfiguration } from "vscode";
-import { SettingNames } from "./constants";
+import { Constants } from "./constants";
+
+export class SettingNames {
+	static SettingsPrefix: string = Constants.ExtensionName + '.';
+	static Enabled: string = SettingNames.SettingsPrefix + 'enabled';
+	static ExecutablePath: string = SettingNames.SettingsPrefix + 'executablePath';
+	static WorkingPath: string = SettingNames.SettingsPrefix + 'workingPath';
+}
 
 abstract class BaseSettings {
 
