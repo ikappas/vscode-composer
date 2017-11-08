@@ -71,7 +71,7 @@ export class ComposerExtension extends Disposable {
 	 */
 	private registerCommands(): void {
 		this.registerCommand(CommandNames.About, this.commandAbout);
-		this.registerCommand(CommandNames.Archive, this.commandArchive);
+		this.registerCommand(CommandNames.Archive, this.ensureComposerProject(this.commandArchive));
 		this.registerCommand(CommandNames.ClearCache, this.commandClearCache);
 		this.registerCommand(CommandNames.Diagnose, this.commandDiagnose);
 		this.registerCommand(CommandNames.DumpAutoload, this.commandDumpAutoload);
