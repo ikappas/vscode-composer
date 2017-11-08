@@ -8,6 +8,8 @@ import * as fs from "fs";
 import { WorkspaceFolder, Event, EventEmitter } from "vscode";
 import { ComposerWorkspaceSettings, ComposerWorkspaceSettingsChangeEvent } from "../helpers/settings";
 import { ComposerClient, ComposerClientChangeEvent } from "../clients/composer-client";
+import { ComposerError } from "../helpers/errors";
+import { Strings } from "../helpers/strings";
 
 export class ComposerContext {
 
@@ -71,6 +73,11 @@ export class ComposerContext {
 	 */
 	public get client(): ComposerClient {
 		if (!this._client) {
+			if (!this.settings.executablePath) {
+				throw new ComposerError({
+					message: Strings.ComposerExecutablePathRequired
+				});
+			}
 			this.client = new ComposerClient(
 				this.settings.executablePath,
 				this.workingPath,
