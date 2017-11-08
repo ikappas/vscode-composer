@@ -36,7 +36,7 @@ export class Strings {
 	// Errors
 	static ComposerExecutablePathRequired: string = 'Please set composer.executablePath in your user settings in order to to access composer features.';
 	static ComposerNotFound: string = 'Composer could not be found in the system.';
-	static ComposerContextRequired: string = 'Please open a workspace folder to access composer features.';
+	static ComposerContextRequired: string = 'Please open a workspace folder in order to access composer features.';
 	static ComposerProjectRequired: string = 'Open a folder with a composer project in order to access composer features.';
 	static ComposerCommandNotImplemented: string = 'The composer "{0}" command is not implemented';
 }
