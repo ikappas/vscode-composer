@@ -1,7 +1,8 @@
-/*---------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  * Copyright (C) Ioannis Kappas. All rights reserved.
- *--------------------------------------------------------*/
-"use strict";
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+'use strict';
 
 import { IDisposable, toDisposable, dispose } from './lifecycle';
 import * as cp from 'child_process';
