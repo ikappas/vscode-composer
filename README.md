@@ -88,8 +88,6 @@ Example user settings.json on Windows:
 
 All composer commands are available through the Command Pallet using `F1`.
 
-> **Important:** All composer project specific commands execute using the workspace root path as the working directory.
-
 ## Supported Commands
 
 ### Composer: About
