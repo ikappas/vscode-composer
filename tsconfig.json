@@ -1,13 +1,20 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "outDir": "out",
-        "noLib": true,
-        "sourceMap": true,
-        "rootDir": "."
-    },
-    "exclude": [
-        "node_modules"
-    ]
+	"compilerOptions": {
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"lib": [
+			"es2016"
+		],
+		"rootDir": ".",
+		"outDir": "out"
+	},
+	"exclude": [
+		"node_modules"
+	]
 }

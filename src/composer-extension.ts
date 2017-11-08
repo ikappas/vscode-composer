@@ -1,183 +1,264 @@
-/*---------------------------------------------------------
+/*---------------------------------------------------------------------------------------------
  * Copyright (C) Ioannis Kappas. All rights reserved.
- *--------------------------------------------------------*/
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 'use strict';
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { Disposable, OutputChannel, window, workspace, commands } from 'vscode';
-import { IExecutionResult } from './base/common/execution';
-import { Settings } from './helpers/settings';
-import { CommandNames } from './helpers/constants';
+import { Disposable, OutputChannel, window, workspace, commands, Uri, QuickPickItem } from 'vscode';
+import { IExecutionResult } from './helpers/execution';
+import { ComposerGlobalSettings } from './helpers/settings';
 import { Strings } from './helpers/strings';
 import { Constants } from './helpers/constants';
-import { ComposerContext } from './contexts/composercontext';
-import { ComposerClient } from './clients/composerclient';
-import * as strings from './base/common/strings';
+import { ComposerContext } from './contexts/composer-context';
+import { CommandNames, ComposerCommandHandler } from './helpers/commands';
 
 export class ComposerExtension extends Disposable {
-	private disposables: Disposable[] = [];
-    private settings: Settings;
-	private context: ComposerContext;
-	private client: ComposerClient;
 	private channel: OutputChannel;
+	private contexts: Map<Uri, ComposerContext> = new Map();
+	private disposables: Disposable[] = [];
 
 	constructor() {
 		super(() => {
 			this.disposables.map((d)=>{d.dispose();});
 		});
 
-        this.initializeExtension();
+		this.initializeExtension();
 
-        // Add the event listener for settings changes, then re-initialized the extension
-        workspace.onDidChangeConfiguration(() => {
-            this.reinitialize();
-        });
-    }
-
-	private initializeExtension(): void {
-		this.context = new ComposerContext(workspace.rootPath);
-		this.settings = new Settings();
-
-		if ( this.settings.enabled ) {
-			this.client = new ComposerClient({
-				executablePath: this.settings.executablePath,
-				env: process.env
-			});
-
-			this.channel = window.createOutputChannel(Constants.OutputChannel);
-			this.disposables.push( this.channel );
-
-			this.client.onOutput(output => {
-				this.channel.append(output);
-			});
-		}
-
-		// Register commands.
-		this.registerCommand(CommandNames.About, () => {
-			this.reportExecutionResult(this.client.about());
+		// Add the event listener for settings changes, then re-initialized the extension
+		workspace.onDidChangeConfiguration(() => {
+			this.reinitialize();
 		});
-		this.registerCommand(CommandNames.Archive, () => {
-			window.showInputBox({ prompt: Strings.ComposerArchiveInput, placeHolder: Strings.ComposerArchivePlaceHolder }).then( pkg => {
-				if (typeof(pkg) !== 'undefined') {
 
-					let args = ( pkg !== strings.empty )
-							 ? pkg.split(strings.space)
-							 : [];
-
-					this.reportExecutionResult(<Promise<IExecutionResult>> this.client.archive.apply(this.client, args));
-				}
-			});
-		});
-		this.registerCommand(CommandNames.ClearCache, () => {
-			this.reportExecutionResult(this.client.clearCache());
-		});
-		this.registerCommand(CommandNames.Diagnose, () => {
-			this.reportExecutionResult(this.client.diagnose());
-		});
-		this.registerCommand(CommandNames.DumpAutoload, () => {
-			window.showInputBox({ prompt: Strings.ComposerDumpAutoloadInput, placeHolder: Strings.ComposerDumpAutoloadPlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined') {
-
-					let args = ( options !== strings.empty )
-							 ? options.split(strings.space)
-							 : [];
-
-					this.reportExecutionResult(<Promise<IExecutionResult>> this.client.dumpAutoload.apply(this.client, args));
-				}
-			});
-		});
-		this.registerCommand(CommandNames.Install, this.ensureComposerProject(() => {
-			this.reportExecutionResult(this.client.install());
-		}));
-		this.registerCommand(CommandNames.Remove, this.ensureComposerProject(() => {
-			window.showInputBox({ prompt: Strings.ComposerRemoveInput, placeHolder: Strings.ComposerRemovePlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' && options !== strings.empty ) {
-					let args = options.split(strings.space);
-					this.reportExecutionResult(<Promise<IExecutionResult>> this.client.remove.apply(this.client, args));
-				}
-			});
-		}));
-		this.registerCommand(CommandNames.Require, this.ensureComposerProject(() => {
-			window.showInputBox({ prompt: Strings.ComposerRequireInput, placeHolder: Strings.ComposerRequirePlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' && options !== strings.empty ) {
-					let args = options.split(strings.space);
-					this.reportExecutionResult(<Promise<IExecutionResult>> this.client.require.apply(this.client, args));
-				}
-			});
-		}));
-		this.registerCommand(CommandNames.RunScript, this.ensureComposerProject(() => {
-			window.showInputBox({ prompt: Strings.ComposerRunScriptInput, placeHolder: Strings.ComposerRunScriptPlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' && options !== strings.empty ) {
-					let args = options.split(strings.space);
-					this.reportExecutionResult(<Promise<IExecutionResult>> this.client.runScript.apply(this.client, args));
-				}
-			});
-		}));
-		this.registerCommand(CommandNames.SelfUpdate, () => {
-			this.reportExecutionResult(this.client.selfUpdate());;
-		});
-		this.registerCommand(CommandNames.Show, () => {
-			window.showInputBox({ prompt: Strings.ComposerShowInput, placeHolder: Strings.ComposerShowPlaceHolder }).then( options => {
-				if (typeof(options) !== 'undefined' ) {
-
-					let args = ( options !== strings.empty )
-							 ? options.split(strings.space)
-							 : [];
-
-					this.reportExecutionResult(<Promise<IExecutionResult>> this.client.show.apply(this.client, args));
-				}
-			});
-		});
-		this.registerCommand(CommandNames.Status, this.ensureComposerProject(() => {
-			this.client.status();
-		}));
-		this.registerCommand(CommandNames.Update, this.ensureComposerProject(() => {
-			this.reportExecutionResult(this.client.update());
-		}));
-		this.registerCommand(CommandNames.Validate, this.ensureComposerProject(() => {
-			this.reportExecutionResult(this.client.validate());
-		}));
-		this.registerCommand(CommandNames.Version, () => {
-			this.reportExecutionResult(this.client.version());
-		});
+		 // Add the event listener for workspace changes, then re-initialized the extension
+		workspace.onDidChangeWorkspaceFolders(() => {
+			this.reinitialize();
+		})
 	}
 
 	// Reinitialize the extension when coming back online
-    public reinitialize(): void {
-        this.dispose();
-        this.initializeExtension();
-    }
+	public reinitialize(): void {
+		this.dispose();
+		this.initializeExtension();
+	}
 
-	private safeExecute(func: (...args: any[]) => any) : (...args: any[]) => any {
-		return (...args: any[]) => {
-			if (this.settings && this.settings.enabled) {
-				try {
-					this.channel.show();
-					return func.apply(this, args);
-				} catch (error) {
-					window.showErrorMessage(error.message);
-				}
+	private initializeExtension(): void {
+		this.contexts.clear();
+
+		let globalSettings = new ComposerGlobalSettings();
+		if (globalSettings.enabled && workspace.workspaceFolders) {
+
+			// Process each workspace folder
+			for (let folder of workspace.workspaceFolders) {
+				let context = new ComposerContext(folder);
+
+				context.onDidChangeClient( e => {
+					this.disposables.push(e.client.onOutput(o => { this.channel.append(o); }));
+				})
+
+				this.contexts.set(folder.uri, context );
+			}
+		}
+
+		this.channel = window.createOutputChannel(Constants.OutputChannel);
+		this.disposables.push(this.channel);
+
+		this.registerCommands();
+	}
+
+	/**
+	 * Initialize Command handlers.
+	 */
+	private registerCommands(): void {
+		this.registerCommand(CommandNames.About, this.commandAbout);
+		this.registerCommand(CommandNames.Archive, this.ensureComposerProject(this.commandArchive));
+		this.registerCommand(CommandNames.ClearCache, this.commandClearCache);
+		this.registerCommand(CommandNames.Diagnose, this.commandDiagnose);
+		this.registerCommand(CommandNames.DumpAutoload, this.commandDumpAutoload);
+		this.registerCommand(CommandNames.Install, this.ensureComposerProject(this.commandInstall));
+		this.registerCommand(CommandNames.Remove, this.ensureComposerProject(this.commandRemove));
+		this.registerCommand(CommandNames.Require, this.ensureComposerProject(this.commandRequire));
+		this.registerCommand(CommandNames.RunScript, this.ensureComposerProject(this.commandRunScript));
+		this.registerCommand(CommandNames.SelfUpdate, this.commandSelfUpdate);
+		this.registerCommand(CommandNames.Show, this.commandShow);
+		this.registerCommand(CommandNames.Status, this.ensureComposerProject(this.commandStatus));
+		this.registerCommand(CommandNames.Update, this.ensureComposerProject(this.commandUpdate));
+		this.registerCommand(CommandNames.Validate, this.ensureComposerProject(this.commandValidate));
+		this.registerCommand(CommandNames.Version, this.commandVersion);
+	}
+
+	protected commandAbout(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.about());
+	}
+
+	protected commandArchive(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerArchiveInput, placeHolder: Strings.ComposerArchivePlaceHolder }).then(pkg => {
+			if (typeof (pkg) !== 'undefined') {
+
+				let args = (pkg !== String.Empty)
+					? pkg.split(String.Space)
+					: [];
+
+				this.reportExecutionResult(context.client.archive.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandClearCache(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.clearCache());
+	}
+
+	protected commandDiagnose(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.diagnose());
+	}
+
+	protected commandDumpAutoload(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerDumpAutoloadInput, placeHolder: Strings.ComposerDumpAutoloadPlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined') {
+
+				let args = (options !== String.Empty)
+					? options.split(String.Space)
+					: [];
+
+				this.reportExecutionResult(context.client.dumpAutoload.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandInstall(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.install());
+	}
+
+	protected commandRemove(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerRemoveInput, placeHolder: Strings.ComposerRemovePlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined' && options !== String.Empty) {
+				let args = options.split(String.Space);
+				this.reportExecutionResult(context.client.remove.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandRequire(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerRequireInput, placeHolder: Strings.ComposerRequirePlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined' && options !== String.Empty) {
+				let args = options.split(String.Space);
+				this.reportExecutionResult(context.client.require.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandRunScript(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerRunScriptInput, placeHolder: Strings.ComposerRunScriptPlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined' && options !== String.Empty) {
+				let args = options.split(String.Space);
+				this.reportExecutionResult(context.client.runScript.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandSelfUpdate(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.selfUpdate());
+	}
+
+	protected commandShow(context: ComposerContext): void {
+		window.showInputBox({ prompt: Strings.ComposerShowInput, placeHolder: Strings.ComposerShowPlaceHolder }).then(options => {
+			if (typeof (options) !== 'undefined') {
+
+				let args = (options !== String.Empty)
+					? options.split(String.Space)
+					: [];
+
+				this.reportExecutionResult(context.client.show.apply(context.client, args));
+			}
+		});
+	}
+
+	protected commandStatus(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.status());
+	}
+
+	protected commandUpdate(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.update());
+	}
+
+	protected commandValidate(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.validate());
+	}
+
+	protected commandVersion(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.version());
+	}
+
+	/**
+	 * Ensure that the callback will have a composer context.
+	 * @param callback A composer command handler.
+	 */
+	private ensureComposerContext(callback: ComposerCommandHandler): ComposerCommandHandler {
+		return (context: ComposerContext, ...args: any[]) => {
+			switch (this.contexts.size) {
+				case 0:
+					window.showInformationMessage(Strings.ComposerContextRequired);
+					break;
+
+				case 1:
+					context = this.contexts.values().next().value;
+					args.unshift(context);
+					return callback.apply(this, args);
+
+				default:
+					let selections: Map<QuickPickItem, ComposerContext> = new Map();
+					for (let context of this.contexts.values()) {
+						let quickPickItem: QuickPickItem = {
+							label: context.folder.name,
+							description: context.folder.uri.fsPath,
+						};
+						selections.set(quickPickItem, context);
+					}
+					window.showQuickPick(Array.from<QuickPickItem>(selections.keys())).then((selection: QuickPickItem) => {
+						const context = selections.get(selection);
+						if (context) {
+							args.unshift(context);
+							return callback.apply(this, args);
+						}
+					});
+			}
+		}
+	}
+
+	/**
+	 * Safely execute a composer command handler.
+	 * @param callback A composer command handler.
+	 */
+	private safeExecute(callback: ComposerCommandHandler): ComposerCommandHandler {
+		return (context: ComposerContext, ...args: any[]) => {
+			try {
+				this.channel.show();
+				args.unshift(context)
+				return callback.apply(this, args);
+			} catch (error) {
+				window.showErrorMessage(error.message);
 			}
 		};
 	}
 
-	private ensureComposerProject(func: (...args: any[]) => any) : (...args: any[]) => any {
-		return (...args: any[]) => {
-			if (this.context.isComposerProject) {
-				return func.apply(this, args);
+	private ensureComposerProject(callback: ComposerCommandHandler): ComposerCommandHandler {
+		return (context: ComposerContext, ...args: any[]) => {
+			if (context.isComposerProject()) {
+				args.unshift(context);
+				return callback.apply(this, args);
 			}
 			window.showInformationMessage(Strings.ComposerProjectRequired);
 		};
 	}
 
-	private reportExecutionResult(result: Promise<IExecutionResult>):void {
+	private reportExecutionResult(result: Promise<IExecutionResult>): void {
 		result.then(() => {
 			if (this.channel) {
 				this.channel.appendLine(Strings.CommandCompletedSuccessfully + '\n');
 			}
 		}, () => {
-			if (this.channel){
+			if (this.channel) {
 				this.channel.appendLine(Strings.CommandCompletedWithErrors + '\n');
 			}
 		});
@@ -193,9 +274,9 @@ export class ComposerExtension extends Disposable {
 	 * @param command A unique identifier for the command.
 	 * @param callback A command handler function.
 	 * @param thisArg The `this` context used when invoking the handler function.
-	 * @return Disposable which unregisters this command on disposal.
 	 */
-	private registerCommand(command: string, callback: (...args: any[]) => any, thisArg?: any) {
-		this.disposables.push(commands.registerCommand(command, this.safeExecute( callback ), thisArg));
+	private registerCommand(command: string, callback: ComposerCommandHandler, thisArg?: any): void {
+		let contextCallback = this.ensureComposerContext(this.safeExecute(callback));
+		this.disposables.push(commands.registerCommand(command, contextCallback, thisArg));
 	}
 }
