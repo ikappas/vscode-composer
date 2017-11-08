@@ -215,7 +215,7 @@ export class ComposerExtension extends Disposable {
 						};
 						selections.set(quickPickItem, context);
 					}
-					window.showQuickPick(Array.from<QuickPickItem>(selections.keys())).then((selection: QuickPickItem) => {
+					window.showQuickPick(Array.from<QuickPickItem>(selections.keys()), { placeHolder: Strings.QuickPickWorkspaceFolder }).then((selection: QuickPickItem) => {
 						const context = selections.get(selection);
 						if (context) {
 							args.unshift(context);

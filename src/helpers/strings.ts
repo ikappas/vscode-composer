@@ -34,6 +34,8 @@ export class Strings {
 	static CommandCompletedSuccessfully: string = 'Command completed successfully.';
     static CommandCompletedWithErrors: string = 'Command completed with errors.';
 
+	static QuickPickWorkspaceFolder: string = 'Select composer command target workspace folder ...';
+
 	// Errors
 	static ComposerExecutablePathRequired: string = 'Please set composer.executablePath in your user settings in order to to access composer features.';
 	static ComposerNotFound: string = 'Composer could not be found in the system.';
