@@ -8,7 +8,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import { Disposable, OutputChannel, window, workspace, commands, Uri } from 'vscode';
 import { IExecutionResult } from './helpers/execution';
-import { ComposerGlobalSettings } from './helpers/settings';
+import { ComposerSettings } from './helpers/settings';
 import { Strings } from './helpers/strings';
 import { Constants } from './helpers/constants';
 import { ComposerContext } from './contexts/composer-context';
@@ -46,7 +46,7 @@ export class ComposerExtension extends Disposable {
 	private initializeExtension(): void {
 		this.contexts.clear();
 
-		let globalSettings = new ComposerGlobalSettings();
+		let globalSettings = new ComposerSettings();
 		if (globalSettings.enabled && workspace.workspaceFolders) {
 
 			// Process each workspace folder

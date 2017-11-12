@@ -46,7 +46,7 @@ abstract class BaseSettings {
 		let config: WorkspaceConfiguration;
 		if (this.resource === null || this.resource === undefined ){
 			// Reading Window scoped configuration
-			config = workspace.getConfiguration();
+			config = workspace.getConfiguration('', null);
 		} else {
 			// Reading Resource scoped configuration
 			config = workspace.getConfiguration('', this.resource);
@@ -61,40 +61,21 @@ abstract class BaseSettings {
 	}
 }
 
-export class ComposerGlobalSettings extends BaseSettings {
+export class ComposerSettings extends BaseSettings {
 	private _enabled: boolean;
+	private _executablePath: string;
+	private _workingPath: string;
 
-	constructor() {
-		super();
+	constructor(resource: Uri = null) {
+		super(resource);
 
 		this._enabled = this.readSetting<boolean>(SettingNames.Enabled, true);
+		this._executablePath = this.readSetting<string>(SettingNames.ExecutablePath, undefined);
+		this._workingPath = this.readSetting<string>(SettingNames.WorkingPath, undefined);
 	}
 
 	public get enabled(): boolean {
 		return this._enabled;
-	}
-}
-
-/**
- * An event describing a transactional composer global settings change.
- */
-export interface ComposerGlobalSettingsChangeEvent {
-
-	/**
-	 * The affected settings.
-	 */
-	settings: ComposerGlobalSettings;
-}
-
-export class ComposerWorkspaceSettings extends BaseSettings {
-	private _executablePath: string;
-	private _workingPath: string;
-
-	constructor(resource: Uri) {
-		super(resource);
-
-		this._executablePath = this.readSetting<string>(SettingNames.ExecutablePath, undefined);
-		this._workingPath = this.readSetting<string>(SettingNames.WorkingPath, undefined);
 	}
 
 	public get executablePath(): string {
@@ -109,10 +90,10 @@ export class ComposerWorkspaceSettings extends BaseSettings {
 /**
  * An event describing a transactional composer workspace settings change.
  */
-export interface ComposerWorkspaceSettingsChangeEvent {
+export interface ComposerSettingsChangeEvent {
 
 	/**
 	 * The affected settings.
 	 */
-	settings: ComposerWorkspaceSettings;
+	settings: ComposerSettings;
 }
