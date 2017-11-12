@@ -207,7 +207,7 @@ export class ComposerExtension extends Disposable {
 					return callback.apply(this, args);
 
 				default:
-					window.showWorkspaceFolderPick({ placeHolder: Strings.QuickPickWorkspaceFolder }).then((folder) => {
+					window.showWorkspaceFolderPick({ placeHolder: Strings.WorkspaceFolderPick }).then((folder) => {
 						const context = this.contexts.get(folder.uri);
 						if (context) {
 							args.unshift(context);
