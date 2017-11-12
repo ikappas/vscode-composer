@@ -34,7 +34,7 @@ export class ComposerExtension extends Disposable {
 		 // Add the event listener for workspace changes, then re-initialized the extension
 		workspace.onDidChangeWorkspaceFolders(() => {
 			this.reinitialize();
-		})
+		});
 	}
 
 	// Reinitialize the extension when coming back online
@@ -55,7 +55,7 @@ export class ComposerExtension extends Disposable {
 
 				context.onDidChangeClient( e => {
 					this.disposables.push(e.client.onOutput(o => { this.channel.append(o); }));
-				})
+				});
 
 				this.contexts.set(folder.uri, context );
 			}
@@ -223,7 +223,7 @@ export class ComposerExtension extends Disposable {
 						}
 					});
 			}
-		}
+		};
 	}
 
 	/**
@@ -234,7 +234,7 @@ export class ComposerExtension extends Disposable {
 		return (context: ComposerContext, ...args: any[]) => {
 			try {
 				this.channel.show();
-				args.unshift(context)
+				args.unshift(context);
 				return callback.apply(this, args);
 			} catch (error) {
 				window.showErrorMessage(error.message);
