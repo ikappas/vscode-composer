@@ -31,7 +31,7 @@
     "multi-root ready"
   ],
   "engines": {
-    "vscode": "^1.16.0"
+    "vscode": "^1.18.0"
   },
   "activationEvents": [
     "onCommand:composer.About",

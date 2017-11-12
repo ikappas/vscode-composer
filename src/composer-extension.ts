@@ -6,7 +6,7 @@
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { Disposable, OutputChannel, window, workspace, commands, Uri, QuickPickItem } from 'vscode';
+import { Disposable, OutputChannel, window, workspace, commands, Uri } from 'vscode';
 import { IExecutionResult } from './helpers/execution';
 import { ComposerGlobalSettings } from './helpers/settings';
 import { Strings } from './helpers/strings';
@@ -207,16 +207,8 @@ export class ComposerExtension extends Disposable {
 					return callback.apply(this, args);
 
 				default:
-					let selections: Map<QuickPickItem, ComposerContext> = new Map();
-					for (let context of this.contexts.values()) {
-						let quickPickItem: QuickPickItem = {
-							label: context.folder.name,
-							description: context.folder.uri.fsPath,
-						};
-						selections.set(quickPickItem, context);
-					}
-					window.showQuickPick(Array.from<QuickPickItem>(selections.keys()), { placeHolder: Strings.QuickPickWorkspaceFolder }).then((selection: QuickPickItem) => {
-						const context = selections.get(selection);
+					window.showWorkspaceFolderPick({ placeHolder: Strings.QuickPickWorkspaceFolder }).then((folder) => {
+						const context = this.contexts.get(folder.uri);
 						if (context) {
 							args.unshift(context);
 							return callback.apply(this, args);
