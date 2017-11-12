@@ -1,6 +1,7 @@
 # Extension specific
 out
 *.vsix
+package-lock.json
 
 # General
 .
