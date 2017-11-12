@@ -2,7 +2,7 @@
   "name": "composer",
   "displayName": "Composer",
   "description": "PHP Composer for Visual Studio Code",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "author": "Ioannis Kappas",
   "publisher": "ikappas",
   "license": "MIT",
@@ -31,7 +31,7 @@
     "multi-root ready"
   ],
   "engines": {
-    "vscode": "^1.16.0"
+    "vscode": "^1.18.0"
   },
   "activationEvents": [
     "onCommand:composer.About",
@@ -164,6 +164,7 @@
     "@types/mocha": "^2.2.44",
     "@types/node": "^6.0.90",
     "@types/iconv-lite": "^0.0.1",
+    "tslint": "^5.8.0",
     "typescript": "^2.6.1",
     "vscode": "^1.1.6"
   }

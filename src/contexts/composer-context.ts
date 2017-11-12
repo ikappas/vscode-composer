@@ -7,7 +7,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import { WorkspaceFolder, Event, EventEmitter } from "vscode";
-import { ComposerWorkspaceSettings, ComposerWorkspaceSettingsChangeEvent } from "../helpers/settings";
+import { ComposerSettings, ComposerSettingsChangeEvent } from "../helpers/settings";
 import { ComposerClient, ComposerClientChangeEvent } from "../clients/composer-client";
 import { ComposerError } from "../helpers/errors";
 import { Strings } from "../helpers/strings";
@@ -15,10 +15,10 @@ import { Strings } from "../helpers/strings";
 export class ComposerContext {
 
 	private _folder: WorkspaceFolder;
-	private _settings: ComposerWorkspaceSettings;
+	private _settings: ComposerSettings;
 	private _client: ComposerClient;
 
-	private _onDidChangeSettings = new EventEmitter<ComposerWorkspaceSettingsChangeEvent>();
+	private _onDidChangeSettings = new EventEmitter<ComposerSettingsChangeEvent>();
 	private _onDidChangeClient = new EventEmitter<ComposerClientChangeEvent>();
 
 	/**
@@ -46,9 +46,9 @@ export class ComposerContext {
 	/**
 	 * Get the composer settings associated with this context.
 	 */
-	public get settings(): ComposerWorkspaceSettings {
+	public get settings(): ComposerSettings {
 		if (!this._settings) {
-			this.settings = new ComposerWorkspaceSettings(this.folder.uri);
+			this.settings = new ComposerSettings(this.folder.uri);
 		}
 		return this._settings;
 	}
@@ -57,7 +57,7 @@ export class ComposerContext {
 	 * Set the composer settings associated with this context.
 	 * @access private
 	 */
-	public set settings(settings: ComposerWorkspaceSettings) {
+	public set settings(settings: ComposerSettings) {
 		this._settings = settings;
 		this._onDidChangeSettings.fire({ settings: settings });
 	}
@@ -65,7 +65,7 @@ export class ComposerContext {
 	/**
 	 * An event that is emitted when a composer settings object is set.
 	 */
-	public get onDidChangeSettings(): Event<ComposerWorkspaceSettingsChangeEvent> {
+	public get onDidChangeSettings(): Event<ComposerSettingsChangeEvent> {
 		return this._onDidChangeSettings.event;
 	}
 

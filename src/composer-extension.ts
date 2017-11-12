@@ -6,9 +6,9 @@
 
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { Disposable, OutputChannel, window, workspace, commands, Uri, QuickPickItem } from 'vscode';
+import { Disposable, OutputChannel, window, workspace, commands, Uri } from 'vscode';
 import { IExecutionResult } from './helpers/execution';
-import { ComposerGlobalSettings } from './helpers/settings';
+import { ComposerSettings } from './helpers/settings';
 import { Strings } from './helpers/strings';
 import { Constants } from './helpers/constants';
 import { ComposerContext } from './contexts/composer-context';
@@ -22,7 +22,10 @@ export class ComposerExtension extends Disposable {
 	constructor() {
 		super(() => {
 			this.disposables.map((d)=>{d.dispose();});
+			this.channel.dispose();
 		});
+
+		this.channel = window.createOutputChannel(Constants.OutputChannel);
 
 		this.initializeExtension();
 
@@ -34,19 +37,19 @@ export class ComposerExtension extends Disposable {
 		 // Add the event listener for workspace changes, then re-initialized the extension
 		workspace.onDidChangeWorkspaceFolders(() => {
 			this.reinitialize();
-		})
+		});
 	}
 
 	// Reinitialize the extension when coming back online
 	public reinitialize(): void {
-		this.dispose();
+		this.disposables.map((d) => { d.dispose(); });
 		this.initializeExtension();
 	}
 
 	private initializeExtension(): void {
 		this.contexts.clear();
 
-		let globalSettings = new ComposerGlobalSettings();
+		let globalSettings = new ComposerSettings();
 		if (globalSettings.enabled && workspace.workspaceFolders) {
 
 			// Process each workspace folder
@@ -55,14 +58,11 @@ export class ComposerExtension extends Disposable {
 
 				context.onDidChangeClient( e => {
 					this.disposables.push(e.client.onOutput(o => { this.channel.append(o); }));
-				})
+				});
 
 				this.contexts.set(folder.uri, context );
 			}
 		}
-
-		this.channel = window.createOutputChannel(Constants.OutputChannel);
-		this.disposables.push(this.channel);
 
 		this.registerCommands();
 	}
@@ -207,23 +207,15 @@ export class ComposerExtension extends Disposable {
 					return callback.apply(this, args);
 
 				default:
-					let selections: Map<QuickPickItem, ComposerContext> = new Map();
-					for (let context of this.contexts.values()) {
-						let quickPickItem: QuickPickItem = {
-							label: context.folder.name,
-							description: context.folder.uri.fsPath,
-						};
-						selections.set(quickPickItem, context);
-					}
-					window.showQuickPick(Array.from<QuickPickItem>(selections.keys()), { placeHolder: Strings.QuickPickWorkspaceFolder }).then((selection: QuickPickItem) => {
-						const context = selections.get(selection);
+					window.showWorkspaceFolderPick({ placeHolder: Strings.WorkspaceFolderPick }).then((folder) => {
+						const context = this.contexts.get(folder.uri);
 						if (context) {
 							args.unshift(context);
 							return callback.apply(this, args);
 						}
 					});
 			}
-		}
+		};
 	}
 
 	/**
@@ -234,7 +226,7 @@ export class ComposerExtension extends Disposable {
 		return (context: ComposerContext, ...args: any[]) => {
 			try {
 				this.channel.show();
-				args.unshift(context)
+				args.unshift(context);
 				return callback.apply(this, args);
 			} catch (error) {
 				window.showErrorMessage(error.message);
