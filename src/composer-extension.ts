@@ -22,7 +22,10 @@ export class ComposerExtension extends Disposable {
 	constructor() {
 		super(() => {
 			this.disposables.map((d)=>{d.dispose();});
+			this.channel.dispose();
 		});
+
+		this.channel = window.createOutputChannel(Constants.OutputChannel);
 
 		this.initializeExtension();
 
@@ -39,7 +42,7 @@ export class ComposerExtension extends Disposable {
 
 	// Reinitialize the extension when coming back online
 	public reinitialize(): void {
-		this.dispose();
+		this.disposables.map((d) => { d.dispose(); });
 		this.initializeExtension();
 	}
 
@@ -60,9 +63,6 @@ export class ComposerExtension extends Disposable {
 				this.contexts.set(folder.uri, context );
 			}
 		}
-
-		this.channel = window.createOutputChannel(Constants.OutputChannel);
-		this.disposables.push(this.channel);
 
 		this.registerCommands();
 	}
