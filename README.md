@@ -114,6 +114,10 @@ Dumps the autoloader.
 
 Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
 
+### Composer: Outdated
+
+Shows a list of installed packages that have updates available, including their current and latest versions. 
+
 ### Composer: Remove
 
 Removes a package from the require or require-dev.
