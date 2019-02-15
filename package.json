@@ -40,6 +40,7 @@
     "onCommand:composer.Diagnose",
     "onCommand:composer.DumpAutoload",
     "onCommand:composer.Install",
+    "onCommand:composer.Outdated",
     "onCommand:composer.Remove",
     "onCommand:composer.Require",
     "onCommand:composer.RunScript",
@@ -111,6 +112,10 @@
       {
         "command": "composer.Install",
         "title": "Composer: Install"
+      },
+      {
+        "command": "composer.Outdated",
+        "title": "Composer: Outdated"
       },
       {
         "command": "composer.Remove",
