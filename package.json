@@ -84,7 +84,7 @@
     "jsonValidation": [
       {
         "fileMatch": "composer.json",
-        "url": "http://json.schemastore.org/composer"
+        "url": "https://raw.githubusercontent.com/composer/composer/master/res/composer-schema.json"
       }
     ],
     "commands": [
