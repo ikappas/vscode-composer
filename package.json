@@ -161,11 +161,11 @@
     "iconv-lite": "^0.4.19"
   },
   "devDependencies": {
+    "@types/iconv-lite": "^0.0.1",
     "@types/mocha": "^2.2.44",
     "@types/node": "^6.0.90",
-    "@types/iconv-lite": "^0.0.1",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1",
+    "typescript": "^3.9.10",
     "vscode": "^1.1.6"
   }
 }
