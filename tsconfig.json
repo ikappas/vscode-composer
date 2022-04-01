@@ -4,17 +4,18 @@
 		"noUnusedParameters": true,
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
-		"target": "es6",
+		"target": "es2020",
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"lib": [
-			"es2016"
+			"es2020"
 		],
 		"rootDir": ".",
 		"outDir": "out"
 	},
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		".vscode-test"
 	]
 }
