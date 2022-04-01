@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
+import { ComposerError, ComposerErrorCodes } from './errors';
 import { IDisposable, toDisposable, dispose } from './lifecycle';
 import * as cp from 'child_process';
 import iconv = require('iconv-lite');
-import { ComposerError, ComposerErrorCodes } from './errors';
 
 export interface IExecutionResult {
 	exitCode: number;

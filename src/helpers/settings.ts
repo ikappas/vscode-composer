@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import { workspace, Uri, WorkspaceConfiguration } from "vscode";
 import { Constants } from "./constants";
+import { workspace, Uri, WorkspaceConfiguration } from "vscode";
 
 export class SettingNames {
 	static SettingsPrefix: string = Constants.ExtensionName + '.';
@@ -19,7 +19,7 @@ abstract class BaseSettings {
 	/**
 	 * The resource for which the settings apply.
 	 */
-	private _resource : Uri;
+	private _resource: Uri;
 
 	/**
 	 * Class constructor.
@@ -42,10 +42,10 @@ abstract class BaseSettings {
 	 * @param name The name of the setting.
 	 * @param defaultValue The default value for the setting.
 	 */
-	protected readSetting<T>(name: string, defaultValue:T): T {
+	protected readSetting<T>(name: string, defaultValue: T): T {
 		let config: WorkspaceConfiguration;
 
-		if (this.resource === null || this.resource === undefined ){
+		if (this.resource === null || this.resource === undefined) {
 			// Reading Window scoped configuration
 			config = workspace.getConfiguration('', null);
 		} else {

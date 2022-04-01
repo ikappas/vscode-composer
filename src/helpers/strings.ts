@@ -7,31 +7,31 @@
 export class Strings {
 
 	static WorkingDirectory = 'Working Directory: {0}';
-    static ExecutingCommand =  'Executing: composer {0}';
+	static ExecutingCommand = 'Executing: composer {0}';
 
-    static InputPackageName = 'Input package name';
-    static InputPackageNamePlaceHolder = 'namespace/name [version]';
+	static InputPackageName = 'Input package name';
+	static InputPackageNamePlaceHolder = 'namespace/name [version]';
 
-    static ComposerArchiveInput = 'Optional. Input options, package name and/or version to archive.';
-    static ComposerArchivePlaceHolder = '[options] [--] [<package>] [<version>]';
+	static ComposerArchiveInput = 'Optional. Input options, package name and/or version to archive.';
+	static ComposerArchivePlaceHolder = '[options] [--] [<package>] [<version>]';
 
-    static ComposerDumpAutoloadInput = 'Optional. Input options to use.';
-    static ComposerDumpAutoloadPlaceHolder = '[options]';
+	static ComposerDumpAutoloadInput = 'Optional. Input options to use.';
+	static ComposerDumpAutoloadPlaceHolder = '[options]';
 
-    static ComposerShowInput = 'Composer Show Arguments';
-    static ComposerShowPlaceHolder = '[options] [--] [<package>] [<version>]';
+	static ComposerShowInput = 'Composer Show Arguments';
+	static ComposerShowPlaceHolder = '[options] [--] [<package>] [<version>]';
 
-    static ComposerRequireInput = 'Input options and the name(s) of the package(s) to add';
-    static ComposerRequirePlaceHolder = '[options] [--] [<packages>] ...';
+	static ComposerRequireInput = 'Input options and the name(s) of the package(s) to add';
+	static ComposerRequirePlaceHolder = '[options] [--] [<packages>] ...';
 
-    static ComposerRemoveInput = 'Input options and the name(s) of the package(s) to remove';
-    static ComposerRemovePlaceHolder = '[options] [--] [<packages>] ...';
+	static ComposerRemoveInput = 'Input options and the name(s) of the package(s) to remove';
+	static ComposerRemovePlaceHolder = '[options] [--] [<packages>] ...';
 
-    static ComposerRunScriptInput = '';
-    static ComposerRunScriptPlaceHolder = '[options] [--] [<script>] [<args>] ...';
+	static ComposerRunScriptInput = '';
+	static ComposerRunScriptPlaceHolder = '[options] [--] [<script>] [<args>] ...';
 
 	static CommandCompletedSuccessfully = 'Command completed successfully.';
-    static CommandCompletedWithErrors = 'Command completed with errors.';
+	static CommandCompletedWithErrors = 'Command completed with errors.';
 
 	static WorkspaceFolderPick = 'Select workspace folder to run composer command ...';
 

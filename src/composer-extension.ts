@@ -4,15 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+import { CommandNames, ComposerCommandHandler } from './helpers/commands';
+import { ComposerContext } from './contexts/composer-context';
+import { ComposerSettings } from './helpers/settings';
+import { Constants } from './helpers/constants';
 import { Disposable, OutputChannel, window, workspace, commands, Uri } from 'vscode';
 import { IExecutionResult } from './helpers/execution';
-import { ComposerSettings } from './helpers/settings';
 import { Strings } from './helpers/strings';
-import { Constants } from './helpers/constants';
-import { ComposerContext } from './contexts/composer-context';
-import { CommandNames, ComposerCommandHandler } from './helpers/commands';
 
 export class ComposerExtension extends Disposable {
 	private channel: OutputChannel;
@@ -21,7 +19,7 @@ export class ComposerExtension extends Disposable {
 
 	constructor() {
 		super(() => {
-			this.disposables.map((d)=>{d.dispose();});
+			this.disposables.map((d) => { d.dispose(); });
 			this.channel.dispose();
 		});
 
@@ -56,11 +54,11 @@ export class ComposerExtension extends Disposable {
 			for (const folder of workspace.workspaceFolders) {
 				const context = new ComposerContext(folder);
 
-				context.onDidChangeClient( e => {
+				context.onDidChangeClient(e => {
 					this.disposables.push(e.client.onOutput(o => { this.channel.append(o); }));
 				});
 
-				this.contexts.set(folder.uri, context );
+				this.contexts.set(folder.uri, context);
 			}
 		}
 

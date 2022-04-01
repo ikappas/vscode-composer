@@ -5,12 +5,12 @@
 'use strict';
 
 import { ComposerError } from '../helpers/errors';
+import { EventEmitter } from 'events';
+import { IDisposable, toDisposable } from '../helpers/lifecycle';
 import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
 import { spawn, ChildProcess } from 'child_process';
 import { Strings } from '../helpers/strings';
 import iconv = require('iconv-lite');
-import { EventEmitter } from 'events';
-import { IDisposable, toDisposable } from '../helpers/lifecycle';
 
 /**
  * An event describing a transactional composer client change.
@@ -140,7 +140,7 @@ export class ComposerClient {
 	/**
 	 * Diagnoses the system to identify common errors.
 	 */
-	public async diagnose(): Promise<IExecutionResult>  {
+	public async diagnose(): Promise<IExecutionResult> {
 		return this.stream(['diagnose']);
 	}
 
@@ -191,12 +191,12 @@ export class ComposerClient {
 
 
 	/**
-	 * shows a list of installed packages that have updates available, including their current and latest versions. 
+	 * shows a list of installed packages that have updates available, including their current and latest versions.
 	 */
 	public async outdated(): Promise<IExecutionResult> {
 		return this.run(['outdated']);
-	}	
-	
+	}
+
 	/**
 	 * Shows which packages prevent the given package from being installed
 	 */
@@ -273,7 +273,7 @@ export class ComposerClient {
 	/**
 	 * Validates a composer.json and composer.lock
 	 */
-	public async validate(): Promise<IExecutionResult>  {
+	public async validate(): Promise<IExecutionResult> {
 		return this.stream(['validate']);
 	}
 
@@ -324,10 +324,10 @@ export class ComposerClient {
 
 		return exec(child).then(result => {
 
-			if ( options.log !== false ) {
-				if ( result.exitCode ) {
+			if (options.log !== false) {
+				if (result.exitCode) {
 					this.log(`${result.stderr}\n`);
-				} else if ( result.stderr ) {
+				} else if (result.stderr) {
 					this.log(`${result.stderr}\n`);
 				} else {
 					this.log(`${result.stdout}\n`);
