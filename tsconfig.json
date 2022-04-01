@@ -11,7 +11,7 @@
 		"lib": [
 			"es2020"
 		],
-		"rootDir": ".",
+		"rootDir": "src",
 		"outDir": "out"
 	},
 	"exclude": [

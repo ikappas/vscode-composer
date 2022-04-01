@@ -5,16 +5,17 @@
 			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
-			"runtimeExecutable": "${execPath}",
 			"args": [
+				"${workspaceFolder}/sandbox/",
+				"${workspaceFolder}/sandbox/composer.json",
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
 			"outFiles": [
-				"${workspaceFolder}/out/src/**/*.js"
+				"${workspaceFolder}/out/**/*.js"
 			],
-			"preLaunchTask": "npm: watch"
+			"preLaunchTask": "${defaultBuildTask}"
 		},
 		{
 			"type": "node",
@@ -25,7 +26,7 @@
 			"sourceMaps": true,
 			"restart": true,
 			"outFiles": [
-				"${workspaceFolder}/out/src"
+				"${workspaceFolder}/out/**/*.js"
 			]
 		}
 	]
