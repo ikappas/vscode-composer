@@ -189,6 +189,14 @@ export class ComposerClient {
 		return this.run(['licenses']);
 	}
 
+
+	/**
+	 * shows a list of installed packages that have updates available, including their current and latest versions. 
+	 */
+	public async outdated(): Promise<IExecutionResult> {
+		return this.run(['outdated']);
+	}	
+	
 	/**
 	 * Shows which packages prevent the given package from being installed
 	 */
