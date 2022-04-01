@@ -42,14 +42,14 @@ export async function exec(child: cp.ChildProcess, options: SpawnOptions = {}): 
 
 	const disposables: IDisposable[] = [];
 
-	const once = (ee: NodeJS.EventEmitter, name: string, fn: Function) => {
-		ee.once(name, fn);
-		disposables.push(toDisposable(() => ee.removeListener(name, fn)));
+	const once = (ee: NodeJS.EventEmitter, eventName: string, listener: (...args: any[]) => void) => {
+		ee.once(eventName, listener);
+		disposables.push(toDisposable(() => ee.removeListener(eventName, listener)));
 	};
 
-	const on = (ee: NodeJS.EventEmitter, name: string, fn: Function) => {
-		ee.on(name, fn);
-		disposables.push(toDisposable(() => ee.removeListener(name, fn)));
+	const on = (ee: NodeJS.EventEmitter, eventName: string, listener: (...args: any[]) => void) => {
+		ee.on(eventName, listener);
+		disposables.push(toDisposable(() => ee.removeListener(eventName, listener)));
 	};
 
 	let encoding = options.encoding || 'utf8';
@@ -84,23 +84,23 @@ export interface StreamOutput {
 export async function stream(child: cp.ChildProcess, progress: StreamOutput, encoding = 'utf8'): Promise<IExecutionResult> {
 	const disposables: IDisposable[] = [];
 
-	const once = (ee: NodeJS.EventEmitter, name: string, fn: Function) => {
-		ee.once(name, fn);
-		disposables.push(toDisposable(() => ee.removeListener(name, fn)));
+	const once = (ee: NodeJS.EventEmitter, eventName: string, listener: (...args: any[]) => void) => {
+		ee.once(eventName, listener);
+		disposables.push(toDisposable(() => ee.removeListener(eventName, listener)));
 	};
 
-	const on = (ee: NodeJS.EventEmitter, name: string, fn: Function) => {
-		ee.on(name, fn);
-		disposables.push(toDisposable(() => ee.removeListener(name, fn)));
+	const on = (ee: NodeJS.EventEmitter, eventName: string, listener: (...args: any[]) => void) => {
+		ee.on(eventName, listener);
+		disposables.push(toDisposable(() => ee.removeListener(eventName, listener)));
 	};
 
-	let exitCode = new Promise<number>((resolve, reject) => {
+	const exitCode = new Promise<number>((resolve, reject) => {
 		once(child, 'error', reject);
 		once(child, 'exit', resolve);
 	});
 
-	let stdout = new Promise<string>(resolve => {
-		let buffers: Buffer[] = [];
+	const stdout = new Promise<string>(resolve => {
+		const buffers: Buffer[] = [];
 		on(child.stdout, 'data', (b: Buffer) => {
 			buffers.push(b);
 			progress(iconv.decode(b, encoding));
@@ -108,8 +108,8 @@ export async function stream(child: cp.ChildProcess, progress: StreamOutput, enc
 		once(child.stdout, 'close', () => resolve(iconv.decode(Buffer.concat(buffers), encoding)));
 	});
 
-	let stderr = new Promise<string>(resolve => {
-		let buffers: Buffer[] = [];
+	const stderr = new Promise<string>(resolve => {
+		const buffers: Buffer[] = [];
 		on(child.stderr, 'data', (b: Buffer) => {
 			buffers.push(b);
 			progress(iconv.decode(b, encoding));

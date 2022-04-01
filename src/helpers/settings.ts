@@ -44,6 +44,7 @@ abstract class BaseSettings {
 	 */
 	protected readSetting<T>(name: string, defaultValue:T): T {
 		let config: WorkspaceConfiguration;
+
 		if (this.resource === null || this.resource === undefined ){
 			// Reading Window scoped configuration
 			config = workspace.getConfiguration('', null);
@@ -51,12 +52,14 @@ abstract class BaseSettings {
 			// Reading Resource scoped configuration
 			config = workspace.getConfiguration('', this.resource);
 		}
-		let value = config.get<T>(name, undefined);
+
+		const value = config.get<T>(name, undefined);
 
 		// If user specified a value, use it
 		if (value !== undefined && value !== null) {
 			return value;
 		}
+
 		return defaultValue;
 	}
 }

@@ -111,7 +111,7 @@ export class ComposerContext {
 		let workingPath = this.folder.uri.fsPath;
 
 		// Process settings.
-		let settingsPath = this.settings.workingPath;
+		const settingsPath = this.settings.workingPath;
 		if (settingsPath !== null && settingsPath !== undefined) {
 			if (path.isAbsolute(settingsPath)) {
 				workingPath = settingsPath;
@@ -128,7 +128,7 @@ export class ComposerContext {
 	 */
 	public get composerJsonPath(): string {
 		try {
-			let composerJsonPath = fs.realpathSync(path.join(this.workingPath, 'composer.json'));
+			const composerJsonPath = fs.realpathSync(path.join(this.workingPath, 'composer.json'));
 			fs.accessSync(composerJsonPath);
 			return composerJsonPath;
 		} catch {
