@@ -16,6 +16,7 @@ export class CommandNames {
 	static Diagnose: string = CommandNames.CommandPrefix + 'Diagnose';
 	static DumpAutoload: string = CommandNames.CommandPrefix + 'DumpAutoload';
 	static Install: string = CommandNames.CommandPrefix + 'Install';
+	static Outdated: string = CommandNames.CommandPrefix + 'Outdated';
 	static Remove: string = CommandNames.CommandPrefix + 'Remove';
 	static RemovePackage: string = CommandNames.CommandPrefix + 'RemovePackage';
 	static Require: string = CommandNames.CommandPrefix + 'Require';
