@@ -4,46 +4,44 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-/* tslint:disable:variable-name */
 export class Strings {
 
-	static WorkingDirectory: string = 'Working Directory: {0}';
-    static ExecutingCommand: string =  'Executing: composer {0}';
+	static WorkingDirectory = 'Working Directory: {0}';
+    static ExecutingCommand =  'Executing: composer {0}';
 
-    static InputPackageName: string = 'Input package name';
-    static InputPackageNamePlaceHolder: string = 'namespace/name [version]';
+    static InputPackageName = 'Input package name';
+    static InputPackageNamePlaceHolder = 'namespace/name [version]';
 
-    static ComposerArchiveInput: string = 'Optional. Input options, package name and/or version to archive.';
-    static ComposerArchivePlaceHolder: string = '[options] [--] [<package>] [<version>]';
+    static ComposerArchiveInput = 'Optional. Input options, package name and/or version to archive.';
+    static ComposerArchivePlaceHolder = '[options] [--] [<package>] [<version>]';
 
-    static ComposerDumpAutoloadInput: string = 'Optional. Input options to use.';
-    static ComposerDumpAutoloadPlaceHolder: string = '[options]';
+    static ComposerDumpAutoloadInput = 'Optional. Input options to use.';
+    static ComposerDumpAutoloadPlaceHolder = '[options]';
 
-    static ComposerShowInput: string = 'Composer Show Arguments';
-    static ComposerShowPlaceHolder: string = '[options] [--] [<package>] [<version>]';
+    static ComposerShowInput = 'Composer Show Arguments';
+    static ComposerShowPlaceHolder = '[options] [--] [<package>] [<version>]';
 
-    static ComposerRequireInput: string = 'Input options and the name(s) of the package(s) to add';
+    static ComposerRequireInput = 'Input options and the name(s) of the package(s) to add';
     static ComposerRequirePlaceHolder = '[options] [--] [<packages>] ...';
 
-    static ComposerRemoveInput: string = 'Input options and the name(s) of the package(s) to remove';
+    static ComposerRemoveInput = 'Input options and the name(s) of the package(s) to remove';
     static ComposerRemovePlaceHolder = '[options] [--] [<packages>] ...';
 
-    static ComposerRunScriptInput: string = '';
-    static ComposerRunScriptPlaceHolder: string = '[options] [--] [<script>] [<args>] ...';
+    static ComposerRunScriptInput = '';
+    static ComposerRunScriptPlaceHolder = '[options] [--] [<script>] [<args>] ...';
 
-	static CommandCompletedSuccessfully: string = 'Command completed successfully.';
-    static CommandCompletedWithErrors: string = 'Command completed with errors.';
+	static CommandCompletedSuccessfully = 'Command completed successfully.';
+    static CommandCompletedWithErrors = 'Command completed with errors.';
 
-	static WorkspaceFolderPick: string = 'Select workspace folder to run composer command ...';
+	static WorkspaceFolderPick = 'Select workspace folder to run composer command ...';
 
 	// Errors
-	static ComposerExecutablePathRequired: string = 'Please set composer.executablePath in your user settings in order to to access composer features.';
-	static ComposerNotFound: string = 'Composer could not be found in the system.';
-	static ComposerContextRequired: string = 'Please open a workspace folder in order to access composer features.';
-	static ComposerProjectRequired: string = 'Open a folder with a composer project in order to access composer features.';
-	static ComposerCommandNotImplemented: string = 'The composer "{0}" command is not implemented';
+	static ComposerExecutablePathRequired = 'Please set composer.executablePath in your user settings in order to to access composer features.';
+	static ComposerNotFound = 'Composer could not be found in the system.';
+	static ComposerContextRequired = 'Please open a workspace folder in order to access composer features.';
+	static ComposerProjectRequired = 'Open a folder with a composer project in order to access composer features.';
+	static ComposerCommandNotImplemented = 'The composer "{0}" command is not implemented';
 }
-/* tslint:enable:variable-name */
 
 declare global {
 	interface StringConstructor {
@@ -77,7 +75,7 @@ String.format = (value: string, ...args: any[]): string => {
 		return value;
 	}
 	return value.replace(_formatRegexp, function (match, group) {
-		let idx = parseInt(group, 10);
+		const idx = parseInt(group, 10);
 		return isNaN(idx) || idx < 0 || idx >= args.length ?
 			match :
 			args[idx];

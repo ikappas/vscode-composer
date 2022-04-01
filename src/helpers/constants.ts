@@ -6,6 +6,6 @@
 
 /* tslint:disable:variable-name */
 export class Constants {
-	static ExtensionName: string = 'composer';
-	static OutputChannel: string = 'Composer';
+	static ExtensionName = 'composer';
+	static OutputChannel = 'Composer';
 }

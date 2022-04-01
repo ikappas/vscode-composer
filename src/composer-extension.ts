@@ -34,7 +34,7 @@ export class ComposerExtension extends Disposable {
 			this.reinitialize();
 		});
 
-		 // Add the event listener for workspace changes, then re-initialized the extension
+		// Add the event listener for workspace changes, then re-initialized the extension
 		workspace.onDidChangeWorkspaceFolders(() => {
 			this.reinitialize();
 		});
@@ -49,12 +49,12 @@ export class ComposerExtension extends Disposable {
 	private initializeExtension(): void {
 		this.contexts.clear();
 
-		let globalSettings = new ComposerSettings();
+		const globalSettings = new ComposerSettings();
 		if (globalSettings.enabled && workspace.workspaceFolders) {
 
 			// Process each workspace folder
-			for (let folder of workspace.workspaceFolders) {
-				let context = new ComposerContext(folder);
+			for (const folder of workspace.workspaceFolders) {
+				const context = new ComposerContext(folder);
 
 				context.onDidChangeClient( e => {
 					this.disposables.push(e.client.onOutput(o => { this.channel.append(o); }));
@@ -97,11 +97,11 @@ export class ComposerExtension extends Disposable {
 		window.showInputBox({ prompt: Strings.ComposerArchiveInput, placeHolder: Strings.ComposerArchivePlaceHolder }).then(pkg => {
 			if (typeof (pkg) !== 'undefined') {
 
-				let args = (pkg !== String.Empty)
+				const args = (pkg !== String.Empty)
 					? pkg.split(String.Space)
 					: [];
 
-				this.reportExecutionResult(context.client.archive.apply(context.client, args));
+				this.reportExecutionResult(context.client.archive(...args));
 			}
 		});
 	}
@@ -118,11 +118,11 @@ export class ComposerExtension extends Disposable {
 		window.showInputBox({ prompt: Strings.ComposerDumpAutoloadInput, placeHolder: Strings.ComposerDumpAutoloadPlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined') {
 
-				let args = (options !== String.Empty)
+				const args = (options !== String.Empty)
 					? options.split(String.Space)
 					: [];
 
-				this.reportExecutionResult(context.client.dumpAutoload.apply(context.client, args));
+				this.reportExecutionResult(context.client.dumpAutoload(...args));
 			}
 		});
 	}
@@ -138,8 +138,8 @@ export class ComposerExtension extends Disposable {
 	protected commandRemove(context: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerRemoveInput, placeHolder: Strings.ComposerRemovePlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined' && options !== String.Empty) {
-				let args = options.split(String.Space);
-				this.reportExecutionResult(context.client.remove.apply(context.client, args));
+				const args = options.split(String.Space);
+				this.reportExecutionResult(context.client.remove(...args));
 			}
 		});
 	}
@@ -147,8 +147,8 @@ export class ComposerExtension extends Disposable {
 	protected commandRequire(context: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerRequireInput, placeHolder: Strings.ComposerRequirePlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined' && options !== String.Empty) {
-				let args = options.split(String.Space);
-				this.reportExecutionResult(context.client.require.apply(context.client, args));
+				const args = options.split(String.Space);
+				this.reportExecutionResult(context.client.require(...args));
 			}
 		});
 	}
@@ -156,8 +156,8 @@ export class ComposerExtension extends Disposable {
 	protected commandRunScript(context: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerRunScriptInput, placeHolder: Strings.ComposerRunScriptPlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined' && options !== String.Empty) {
-				let args = options.split(String.Space);
-				this.reportExecutionResult(context.client.runScript.apply(context.client, args));
+				const args = options.split(String.Space);
+				this.reportExecutionResult(context.client.runScript(...args));
 			}
 		});
 	}
@@ -170,11 +170,11 @@ export class ComposerExtension extends Disposable {
 		window.showInputBox({ prompt: Strings.ComposerShowInput, placeHolder: Strings.ComposerShowPlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined') {
 
-				let args = (options !== String.Empty)
+				const args = (options !== String.Empty)
 					? options.split(String.Space)
 					: [];
 
-				this.reportExecutionResult(context.client.show.apply(context.client, args));
+				this.reportExecutionResult(context.client.show(...args));
 			}
 		});
 	}
@@ -273,7 +273,7 @@ export class ComposerExtension extends Disposable {
 	 * @param thisArg The `this` context used when invoking the handler function.
 	 */
 	private registerCommand(command: string, callback: ComposerCommandHandler, thisArg?: any): void {
-		let contextCallback = this.ensureComposerContext(this.safeExecute(callback));
+		const contextCallback = this.ensureComposerContext(this.safeExecute(callback));
 		this.disposables.push(commands.registerCommand(command, contextCallback, thisArg));
 	}
 }

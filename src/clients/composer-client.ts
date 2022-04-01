@@ -79,7 +79,7 @@ export class ComposerClient {
 	/**
 	 * Short information about Composer.
 	 */
-  	public async about(): Promise<IExecutionResult> {
+	public async about(): Promise<IExecutionResult> {
 		return this.run(['about']);
 	}
 
