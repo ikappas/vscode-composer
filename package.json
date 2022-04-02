@@ -94,75 +94,93 @@
     "commands": [
       {
         "command": "composer.About",
-        "title": "Composer: About"
+        "title": "About",
+        "category": "Composer"
       },
       {
         "command": "composer.Archive",
-        "title": "Composer: Archive"
+        "title": "Archive",
+        "category": "Composer"
       },
       {
         "command": "composer.ClearCache",
-        "title": "Composer: Clear Cache"
+        "title": "Clear Cache",
+        "category": "Composer"
       },
       {
         "command": "composer.Diagnose",
-        "title": "Composer: Diagnose"
+        "title": "Diagnose",
+        "category": "Composer"
       },
       {
         "command": "composer.DumpAutoload",
-        "title": "Composer: Dump Autoloader"
+        "title": "Dump Autoloader",
+        "category": "Composer"
       },
       {
         "command": "composer.Fund",
-        "title": "Composer: Fund"
+        "title": "Fund",
+        "category": "Composer"
       },
       {
         "command": "composer.Install",
-        "title": "Composer: Install"
+        "title": "Install",
+        "category": "Composer"
       },
       {
         "command": "composer.Licenses",
-        "title": "Composer: Licenses"
+        "title": "Licenses",
+        "category": "Composer"
       },
       {
         "command": "composer.Outdated",
-        "title": "Composer: Outdated"
+        "title": "Outdated",
+        "category": "Composer"
       },
       {
         "command": "composer.Remove",
-        "title": "Composer: Remove"
+        "title": "Remove",
+        "category": "Composer"
       },
       {
         "command": "composer.Require",
-        "title": "Composer: Require"
+        "title": "Require",
+        "category": "Composer"
       },
       {
         "command": "composer.RunScript",
-        "title": "Composer: Run Script"
+        "title": "Run Script",
+        "category": "Composer"
       },
       {
         "command": "composer.SelfUpdate",
-        "title": "Composer: Self Update"
+        "title": "Self Update",
+        "category": "Composer"
       },
       {
         "command": "composer.Show",
-        "title": "Composer: Show"
+        "title": "Show",
+        "category": "Composer"
       },
       {
         "command": "composer.Status",
-        "title": "Composer: Status"
+        "title": "Status",
+        "category": "Composer"
       },
       {
         "command": "composer.Update",
-        "title": "Composer: Update"
+        "title": "Update",
+        "category": "Composer"
       },
       {
         "command": "composer.Validate",
-        "title": "Composer: Validate"
+        "title": "Validate",
+        "category": "Composer"
       },
       {
         "command": "composer.Version",
-        "title": "Composer: Version"
+        "title": "Version",
+        "category": "Composer"
       }
     ]
   },
