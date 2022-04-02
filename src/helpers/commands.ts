@@ -5,7 +5,6 @@
 'use strict';
 
 import { Command } from 'vscode';
-import { ComposerContext } from '../contexts/composer-context';
 import { Constants } from './constants';
 
 export class CommandNames {
@@ -29,10 +28,6 @@ export class CommandNames {
 	static Update: string = CommandNames.CommandPrefix + 'Update';
 	static Validate: string = CommandNames.CommandPrefix + 'Validate';
 	static Version: string = CommandNames.CommandPrefix + 'Version';
-}
-
-export interface ComposerCommandHandler {
-	(context: ComposerContext, ...args: any[]): any;
 }
 
 export interface ComposerCommand extends Command {

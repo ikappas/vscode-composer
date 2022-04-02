@@ -4,14 +4,18 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import { CommandNames, ComposerCommandHandler } from './helpers/commands';
-import { ComposerClient } from './clients/composer-client';
-import { ComposerContext } from './contexts/composer-context';
-import { ComposerSettings } from './helpers/settings';
-import { Constants } from './helpers/constants';
+import { CommandNames } from '../helpers/commands';
+import { ComposerClient } from './client';
+import { ComposerContext } from './context';
+import { ComposerSettings } from './settings';
+import { Constants } from '../helpers/constants';
 import { Disposable, OutputChannel, window, workspace, commands, Uri } from 'vscode';
-import { IExecutionResult } from './helpers/execution';
-import { Strings } from './helpers/strings';
+import { IExecutionResult } from '../helpers/execution';
+import { Strings } from '../helpers/strings';
+
+export interface ComposerCommandHandler {
+	(context: ComposerContext, ...args: any[]): any;
+}
 
 export class ComposerExtension extends Disposable {
 	private channel: OutputChannel;

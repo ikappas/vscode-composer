@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import { Constants } from "./constants";
-import { ConfigurationScope, workspace, WorkspaceConfiguration } from "vscode";
+import { ConfigurationScope, workspace, WorkspaceConfiguration } from 'vscode';
+import { Constants } from '../helpers/constants';
 
 export class SettingNames {
 	static SettingsPrefix: string = Constants.ExtensionName + '.';

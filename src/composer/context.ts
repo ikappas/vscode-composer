@@ -4,13 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import { ComposerClient, ComposerClientChangeEvent } from "../clients/composer-client";
-import { ComposerError } from "../helpers/errors";
-import { ComposerSettings, ComposerSettingsChangeEvent } from "../helpers/settings";
-import { Strings } from "../helpers/strings";
-import { WorkspaceFolder, Event, EventEmitter } from "vscode";
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from 'fs';
+import * as path from 'path';
+import { WorkspaceFolder, Event, EventEmitter } from 'vscode';
+import { ComposerClient, ComposerClientChangeEvent } from './client';
+import { ComposerSettings, ComposerSettingsChangeEvent } from './settings';
+import { ComposerError } from '../helpers/errors';
+import { Strings } from '../helpers/strings';
 
 export class ComposerContext {
 

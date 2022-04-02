@@ -6,7 +6,6 @@
 
 import { ComposerError } from '../helpers/errors';
 import { Event, EventEmitter } from 'vscode';
-// import { IDisposable, toDisposable } from '../helpers/lifecycle';
 import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
 import { spawn, ChildProcess } from 'child_process';
 import { Strings } from '../helpers/strings';

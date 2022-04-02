@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import { ExtensionContext } from "vscode";
-import { ComposerExtension } from "./composer-extension";
+import { ExtensionContext } from 'vscode';
+import { ComposerExtension } from './composer/extension';
 
 export function activate(context: ExtensionContext) {
     const composer = new ComposerExtension();
