@@ -5,8 +5,8 @@
 'use strict';
 
 import { ComposerError } from '../helpers/errors';
-import { EventEmitter } from 'events';
-import { IDisposable, toDisposable } from '../helpers/lifecycle';
+import { Event, EventEmitter } from 'vscode';
+// import { IDisposable, toDisposable } from '../helpers/lifecycle';
 import { IExecutionResult, exec, stream, SpawnOptions, StreamOutput } from '../helpers/execution';
 import { spawn, ChildProcess } from 'child_process';
 import { Strings } from '../helpers/strings';
@@ -23,11 +23,26 @@ export interface ComposerClientChangeEvent {
 	client: ComposerClient;
 }
 
+export interface ComposerClientOutputEvent {
+
+	/**
+	 * The client output
+	 */
+	output: string;
+}
+
 export class ComposerClient {
 	private _executablePath: string;
 	private _workingPath: string;
 	private _encoding: string;
-	private _onOutput = new EventEmitter();
+	private _onOutputEmmiter = new EventEmitter<ComposerClientOutputEvent>();
+
+	/**
+	 * An event that is emitted when the client outputs data.
+	 */
+	public get onOutput(): Event<ComposerClientOutputEvent> {
+		return this._onOutputEmmiter.event;
+	}
 
 	public env: any;
 
@@ -65,15 +80,6 @@ export class ComposerClient {
 	 */
 	public get encoding() {
 		return this._encoding;
-	}
-
-	/**
-	 * Get the stream output handler.
-	 */
-	protected get streamOutputHandler(): StreamOutput {
-		return (output: string): void => {
-			this.log(output);
-		};
 	}
 
 	/**
@@ -310,6 +316,15 @@ export class ComposerClient {
 		});
 	}
 
+	/**
+	 * Get the stream output handler.
+	 */
+	protected get streamOutputHandler(): StreamOutput {
+		return (text: string): void => {
+			this.output(text);
+		};
+	}
+
 	protected async run(args: string[], options: any = {}): Promise<IExecutionResult> {
 		options = Object.assign({ cwd: this.workingPath, encoding: this.encoding }, options || {});
 		return this.exec(args, options);
@@ -318,7 +333,7 @@ export class ComposerClient {
 	protected async stream(args: string[], options: any = {}): Promise<IExecutionResult> {
 		options = Object.assign({ cwd: this.workingPath, encoding: this.encoding }, options || {});
 		const child = this.spawn(args, options);
-		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.log('\n'); return r; });
+		return stream(child, this.streamOutputHandler, this.encoding).then(r => { this.output('\n'); return r; });
 	}
 
 	protected async exec(args: string[], options: any = {}): Promise<IExecutionResult> {
@@ -332,11 +347,11 @@ export class ComposerClient {
 
 			if (options.log !== false) {
 				if (result.exitCode) {
-					this.log(`${result.stderr}\n`);
+					this.output(`${result.stderr}\n`);
 				} else if (result.stderr) {
-					this.log(`${result.stderr}\n`);
+					this.output(`${result.stderr}\n`);
 				} else {
-					this.log(`${result.stdout}\n`);
+					this.output(`${result.stdout}\n`);
 				}
 			}
 
@@ -361,8 +376,8 @@ export class ComposerClient {
 		options.env = Object.assign(options.env, this.env);
 
 		if (options.log !== false) {
-			this.log(String.format(Strings.WorkingDirectory + '\n', options.cwd));
-			this.log(String.format(Strings.ExecutingCommand + '\n\n', args.join(' ')));
+			this.output(String.format(Strings.WorkingDirectory + '\n', options.cwd));
+			this.output(String.format(Strings.ExecutingCommand + '\n\n', args.join(' ')));
 		}
 
 		// Disable progress on specific commands
@@ -377,18 +392,10 @@ export class ComposerClient {
 	}
 
 	/**
-	 * An event that is emitted when a composer settings object is set.
+	 * Output specified text.
+	 * @param text The text to output.
 	 */
-	public onOutput(listener: (output: string) => void): IDisposable {
-		this._onOutput.addListener('log', listener);
-		return toDisposable(() => this._onOutput.removeListener('log', listener));
-	}
-
-	/**
-	 * Log output.
-	 * @param output The output to log.
-	 */
-	private log(output: string): void {
-		this._onOutput.emit('log', output);
+	private output(text: string): void {
+		this._onOutputEmmiter.fire({ output: text });
 	}
 }
