@@ -73,8 +73,8 @@ export class ComposerExtension extends Disposable {
 		this.registerCommand(CommandNames.Archive, this.ensureComposerProject(this.commandArchive));
 		this.registerCommand(CommandNames.ClearCache, this.commandClearCache);
 		this.registerCommand(CommandNames.Diagnose, this.commandDiagnose);
-		this.registerCommand(CommandNames.DumpAutoload, this.commandDumpAutoload);
-		this.registerCommand(CommandNames.Fund, this.commandFund);
+		this.registerCommand(CommandNames.DumpAutoload, this.ensureComposerProject(this.commandDumpAutoload));
+		this.registerCommand(CommandNames.Fund, this.ensureComposerProject(this.commandFund));
 		this.registerCommand(CommandNames.Install, this.ensureComposerProject(this.commandInstall));
 		this.registerCommand(CommandNames.Licenses, this.ensureComposerProject(this.commandLicenses));
 		this.registerCommand(CommandNames.Outdated, this.ensureComposerProject(this.commandOutdated));
@@ -82,7 +82,7 @@ export class ComposerExtension extends Disposable {
 		this.registerCommand(CommandNames.Require, this.ensureComposerProject(this.commandRequire));
 		this.registerCommand(CommandNames.RunScript, this.ensureComposerProject(this.commandRunScript));
 		this.registerCommand(CommandNames.SelfUpdate, this.commandSelfUpdate);
-		this.registerCommand(CommandNames.Show, this.commandShow);
+		this.registerCommand(CommandNames.Show, this.ensureComposerProject(this.commandShow));
 		this.registerCommand(CommandNames.Status, this.ensureComposerProject(this.commandStatus));
 		this.registerCommand(CommandNames.Update, this.ensureComposerProject(this.commandUpdate));
 		this.registerCommand(CommandNames.Validate, this.ensureComposerProject(this.commandValidate));
