@@ -1,11 +1,14 @@
+.devcontainer/**
 .vscode/**
 .vscode-test/**
 typings/**
 out/test/**
 out/**/*.map
 test/**
+sandbox/**
 src/**
 **/*.map
-src/**
+.editorconfig
+.eslintrc.js
 .gitignore
 tsconfig.json
