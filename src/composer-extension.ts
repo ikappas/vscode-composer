@@ -76,6 +76,7 @@ export class ComposerExtension extends Disposable {
 		this.registerCommand(CommandNames.DumpAutoload, this.commandDumpAutoload);
 		this.registerCommand(CommandNames.Fund, this.commandFund);
 		this.registerCommand(CommandNames.Install, this.ensureComposerProject(this.commandInstall));
+		this.registerCommand(CommandNames.Licenses, this.ensureComposerProject(this.commandLicenses));
 		this.registerCommand(CommandNames.Outdated, this.ensureComposerProject(this.commandOutdated));
 		this.registerCommand(CommandNames.Remove, this.ensureComposerProject(this.commandRemove));
 		this.registerCommand(CommandNames.Require, this.ensureComposerProject(this.commandRequire));
@@ -132,6 +133,10 @@ export class ComposerExtension extends Disposable {
 
 	protected commandInstall(context: ComposerContext): void {
 		this.reportExecutionResult(context.client.install());
+	}
+
+	protected commandLicenses(context: ComposerContext): void {
+		this.reportExecutionResult(context.client.licenses());
 	}
 
 	protected commandOutdated(context: ComposerContext): void {

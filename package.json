@@ -42,6 +42,7 @@
     "onCommand:composer.DumpAutoload",
     "onCommand:composer.Fund",
     "onCommand:composer.Install",
+    "onCommand:composer.Licenses",
     "onCommand:composer.Outdated",
     "onCommand:composer.Remove",
     "onCommand:composer.Require",
@@ -118,6 +119,10 @@
       {
         "command": "composer.Install",
         "title": "Composer: Install"
+      },
+      {
+        "command": "composer.Licenses",
+        "title": "Composer: Licenses"
       },
       {
         "command": "composer.Outdated",

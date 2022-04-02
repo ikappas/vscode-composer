@@ -196,7 +196,6 @@ export class ComposerClient {
 		return this.run(['licenses']);
 	}
 
-
 	/**
 	 * shows a list of installed packages that have updates available, including their current and latest versions.
 	 */
