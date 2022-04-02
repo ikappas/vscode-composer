@@ -5,6 +5,7 @@
 'use strict';
 
 import { CommandNames, ComposerCommandHandler } from './helpers/commands';
+import { ComposerClient } from './clients/composer-client';
 import { ComposerContext } from './contexts/composer-context';
 import { ComposerSettings } from './helpers/settings';
 import { Constants } from './helpers/constants';
@@ -89,11 +90,11 @@ export class ComposerExtension extends Disposable {
 		this.registerCommand(CommandNames.Version, this.commandVersion);
 	}
 
-	protected commandAbout(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.about());
+	protected commandAbout({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.about);
 	}
 
-	protected commandArchive(context: ComposerContext): void {
+	protected commandArchive({ client }: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerArchiveInput, placeHolder: Strings.ComposerArchivePlaceHolder }).then(pkg => {
 			if (typeof (pkg) !== 'undefined') {
 
@@ -101,20 +102,20 @@ export class ComposerExtension extends Disposable {
 					? pkg.split(String.Space)
 					: [];
 
-				this.reportExecutionResult(context.client.archive(...args));
+				this.invokeCommand(client, c => c.archive, ...args);
 			}
 		});
 	}
 
-	protected commandClearCache(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.clearCache());
+	protected commandClearCache({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.clearCache);
 	}
 
-	protected commandDiagnose(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.diagnose());
+	protected commandDiagnose({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.diagnose);
 	}
 
-	protected commandDumpAutoload(context: ComposerContext): void {
+	protected commandDumpAutoload({ client }: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerDumpAutoloadInput, placeHolder: Strings.ComposerDumpAutoloadPlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined') {
 
@@ -122,59 +123,59 @@ export class ComposerExtension extends Disposable {
 					? options.split(String.Space)
 					: [];
 
-				this.reportExecutionResult(context.client.dumpAutoload(...args));
+				this.invokeCommand(client, c => c.dumpAutoload, ...args);
 			}
 		});
 	}
 
-	protected commandFund(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.fund());
+	protected commandFund({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.fund);
 	}
 
-	protected commandInstall(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.install());
+	protected commandInstall({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.install);
 	}
 
-	protected commandLicenses(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.licenses());
+	protected commandLicenses({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.licenses);
 	}
 
-	protected commandOutdated(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.outdated());
+	protected commandOutdated({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.outdated);
 	}
 
-	protected commandRemove(context: ComposerContext): void {
+	protected commandRemove({ client }: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerRemoveInput, placeHolder: Strings.ComposerRemovePlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined' && options !== String.Empty) {
 				const args = options.split(String.Space);
-				this.reportExecutionResult(context.client.remove(...args));
+				this.invokeCommand(client, c => c.remove, ...args);
 			}
 		});
 	}
 
-	protected commandRequire(context: ComposerContext): void {
+	protected commandRequire({ client }: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerRequireInput, placeHolder: Strings.ComposerRequirePlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined' && options !== String.Empty) {
 				const args = options.split(String.Space);
-				this.reportExecutionResult(context.client.require(...args));
+				this.invokeCommand(client, c => c.require, ...args);
 			}
 		});
 	}
 
-	protected commandRunScript(context: ComposerContext): void {
+	protected commandRunScript({ client }: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerRunScriptInput, placeHolder: Strings.ComposerRunScriptPlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined' && options !== String.Empty) {
 				const args = options.split(String.Space);
-				this.reportExecutionResult(context.client.runScript(...args));
+				this.invokeCommand(client, c => c.runScript, ...args);
 			}
 		});
 	}
 
-	protected commandSelfUpdate(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.selfUpdate());
+	protected commandSelfUpdate({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.selfUpdate);
 	}
 
-	protected commandShow(context: ComposerContext): void {
+	protected commandShow({ client }: ComposerContext): void {
 		window.showInputBox({ prompt: Strings.ComposerShowInput, placeHolder: Strings.ComposerShowPlaceHolder }).then(options => {
 			if (typeof (options) !== 'undefined') {
 
@@ -182,25 +183,25 @@ export class ComposerExtension extends Disposable {
 					? options.split(String.Space)
 					: [];
 
-				this.reportExecutionResult(context.client.show(...args));
+				this.invokeCommand(client, c => c.show, ...args);
 			}
 		});
 	}
 
-	protected commandStatus(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.status());
+	protected commandStatus({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.status);
 	}
 
-	protected commandUpdate(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.update());
+	protected commandUpdate({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.update);
 	}
 
-	protected commandValidate(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.validate());
+	protected commandValidate({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.validate);
 	}
 
-	protected commandVersion(context: ComposerContext): void {
-		this.reportExecutionResult(context.client.version());
+	protected commandVersion({ client }: ComposerContext): void {
+		this.invokeCommand(client, c => c.version);
 	}
 
 	/**
@@ -238,7 +239,6 @@ export class ComposerExtension extends Disposable {
 	private safeExecute(callback: ComposerCommandHandler): ComposerCommandHandler {
 		return (context: ComposerContext, ...args: any[]) => {
 			try {
-				this.channel.show();
 				args.unshift(context);
 				return callback.apply(this, args);
 			} catch (error) {
@@ -257,16 +257,21 @@ export class ComposerExtension extends Disposable {
 		};
 	}
 
-	private reportExecutionResult(result: Promise<IExecutionResult>): void {
-		result.then(() => {
-			if (this.channel) {
-				this.channel.appendLine(Strings.CommandCompletedSuccessfully + '\n');
-			}
-		}, () => {
-			if (this.channel) {
-				this.channel.appendLine(Strings.CommandCompletedWithErrors + '\n');
-			}
-		});
+	private async invokeCommand(client: ComposerClient, commandResolver: (client: ComposerClient) => (...args: any[]) => Promise<IExecutionResult>, ...args: any[]): Promise<void> {
+		const commandExecutor = commandResolver(client);
+
+		this.channel.show();
+
+		await commandExecutor.apply(client, args)
+			.then(() => {
+				if (this.channel) {
+					this.channel.appendLine(Strings.CommandCompletedSuccessfully + '\n');
+				}
+			}, () => {
+				if (this.channel) {
+					this.channel.appendLine(Strings.CommandCompletedWithErrors + '\n');
+				}
+			});
 	}
 
 	/**
