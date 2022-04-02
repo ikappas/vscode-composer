@@ -40,6 +40,7 @@
     "onCommand:composer.ClearCache",
     "onCommand:composer.Diagnose",
     "onCommand:composer.DumpAutoload",
+    "onCommand:composer.Fund",
     "onCommand:composer.Install",
     "onCommand:composer.Outdated",
     "onCommand:composer.Remove",
@@ -109,6 +110,10 @@
       {
         "command": "composer.DumpAutoload",
         "title": "Composer: Dump Autoloader"
+      },
+      {
+        "command": "composer.Fund",
+        "title": "Composer: Fund"
       },
       {
         "command": "composer.Install",

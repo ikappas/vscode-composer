@@ -152,6 +152,13 @@ export class ComposerClient {
 	}
 
 	/**
+	 * Discover how to help fund the maintenance of your dependencies.
+	 */
+	public async fund(): Promise<IExecutionResult> {
+		return this.stream(['fund']);
+	}
+
+	/**
 	 * Displays help for a command.
 	 */
 	public async help(command: string): Promise<IExecutionResult> {

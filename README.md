@@ -110,6 +110,9 @@ Diagnoses the system to identify common errors.
 
 Dumps the autoloader.
 
+### Composer: Fund
+Discover how to help fund the maintenance of your dependencies.
+
 ### Composer: Install
 
 Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
