@@ -117,6 +117,10 @@ Discover how to help fund the maintenance of your dependencies.
 
 Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
 
+### Composer: Licenses
+
+Shows information about licenses of dependencies.
+
 ### Composer: Outdated
 
 Shows a list of installed packages that have updates available, including their current and latest versions. 
