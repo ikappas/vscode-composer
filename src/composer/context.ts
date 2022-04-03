@@ -4,22 +4,15 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import * as path from "path";
-import * as fs from "fs";
-import { WorkspaceFolder, Event, EventEmitter } from "vscode";
-import { ComposerSettings, ComposerSettingsChangeEvent } from "../helpers/settings";
-import { ComposerClient, ComposerClientChangeEvent } from "../clients/composer-client";
-import { ComposerError } from "../helpers/errors";
-import { Strings } from "../helpers/strings";
+import * as fs from 'fs';
+import * as path from 'path';
+import { WorkspaceFolder, Event, EventEmitter } from 'vscode';
+import { ComposerSettings, ComposerSettingsChangeEvent } from './settings';
 
 export class ComposerContext {
-
 	private _folder: WorkspaceFolder;
 	private _settings: ComposerSettings;
-	private _client: ComposerClient;
-
 	private _onDidChangeSettings = new EventEmitter<ComposerSettingsChangeEvent>();
-	private _onDidChangeClient = new EventEmitter<ComposerClientChangeEvent>();
 
 	/**
 	 * Class Constructor.
@@ -70,48 +63,13 @@ export class ComposerContext {
 	}
 
 	/**
-	 * Get the composer client associated with this context.
-	 */
-	public get client(): ComposerClient {
-		if (!this._client) {
-			if (!this.settings.executablePath) {
-				throw new ComposerError({
-					message: Strings.ComposerExecutablePathRequired
-				});
-			}
-			this.client = new ComposerClient(
-				this.settings.executablePath,
-				this.workingPath,
-				process.env
-			);
-		}
-		return this._client;
-	}
-
-	/**
-	 * Set the composer client associated with this context.
-	 * @access private
-	 */
-	public set client(client: ComposerClient) {
-		this._client = client;
-		this._onDidChangeClient.fire({ client: this._client });
-	}
-
-	/**
-	 * An event that is emitted when a composer client object is set.
-	 */
-	public get onDidChangeClient(): Event<ComposerClientChangeEvent> {
-		return this._onDidChangeClient.event;
-	}
-
-	/**
 	 * Get the composer working path.
 	 */
 	public get workingPath(): string {
 		let workingPath = this.folder.uri.fsPath;
 
 		// Process settings.
-		let settingsPath = this.settings.workingPath;
+		const settingsPath = this.settings.workingPath;
 		if (settingsPath !== null && settingsPath !== undefined) {
 			if (path.isAbsolute(settingsPath)) {
 				workingPath = settingsPath;
@@ -128,7 +86,7 @@ export class ComposerContext {
 	 */
 	public get composerJsonPath(): string {
 		try {
-			let composerJsonPath = fs.realpathSync(path.join(this.workingPath, 'composer.json'));
+			const composerJsonPath = fs.realpathSync(path.join(this.workingPath, 'composer.json'));
 			fs.accessSync(composerJsonPath);
 			return composerJsonPath;
 		} catch {

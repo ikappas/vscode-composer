@@ -1,0 +1,22 @@
+{
+    "name": "vscode-composer/sandbox",
+    "description": "Sandbox package for vscode composer testing",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "VsCodeComposer\\Sandbox\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ioannis Kappas",
+            "email": "ioannis@kappas.io"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.1",
+        "symfony/symfony": "6.*"
+    }
+}

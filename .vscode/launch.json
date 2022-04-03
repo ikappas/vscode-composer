@@ -1,36 +1,21 @@
 {
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Launch Extension",
+			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
-			"runtimeExecutable": "${execPath}",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceRoot}"
+				"${workspaceFolder}/sandbox/",
+				"${workspaceFolder}/sandbox/composer.json",
+				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
 			"outFiles": [
-				"${workspaceRoot}/out/src/**/*.js"
+				"${workspaceFolder}/out/**/*.js"
 			],
-			"preLaunchTask": "watch"
-		},
-		{
-			"name": "Launch Tests",
-			"type": "extensionHost",
-			"request": "launch",
-			"runtimeExecutable": "${execPath}",
-			"args": [
-				"--extensionDevelopmentPath=${workspaceRoot}",
-				"--extensionTestsPath=${workspaceRoot}/out/test"
-			],
-			"stopOnEntry": false,
-			"sourceMaps": true,
-			"outFiles": [
-				"${workspaceRoot}/out/test/**/*.js"
-			],
-			"preLaunchTask": "watch"
+			"preLaunchTask": "${defaultBuildTask}"
 		},
 		{
 			"type": "node",
@@ -41,7 +26,7 @@
 			"sourceMaps": true,
 			"restart": true,
 			"outFiles": [
-				"${workspaceRoot}/out/src"
+				"${workspaceFolder}/out/**/*.js"
 			]
 		}
 	]

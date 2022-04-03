@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 'use strict';
 
-import { ExtensionContext } from "vscode";
-import { ComposerExtension } from "./composer-extension";
+import { ExtensionContext } from 'vscode';
+import { ComposerExtension } from './composer/extension';
 
 export function activate(context: ExtensionContext) {
-    let composer = new ComposerExtension();
+    const composer = new ComposerExtension();
     context.subscriptions.push(composer);
 }

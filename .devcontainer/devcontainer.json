@@ -1,0 +1,41 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.195.0/containers/php
+{
+    "name": "PHP",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            // Update VARIANT to pick a PHP version: 8, 8.0, 7, 7.4, 7.3
+            // Append -bullseye or -buster to pin to an OS version.
+            // Use -bullseye variants on local on arm64/Apple Silicon.
+            "VARIANT": "8-bullseye",
+			"NODE_VERSION": "lts/*"
+        }
+    },
+
+    // Set *default* container specific settings.json values on container create.
+    "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "workbench.colorCustomizations": {
+            "activityBar.activeBackground": "#213f57",
+            "activityBar.activeBorder": "#422c74",
+            "activityBar.background": "#2f537c",
+            "activityBar.foreground": "#e7e7e7",
+            "activityBar.inactiveForeground": "#e7e7e799",
+            "activityBarBadge.background": "#16825d",
+            "activityBarBadge.foreground": "#e7e7e7",
+            "statusBar.background": "#213f57",
+            "statusBar.border": "#213f57",
+            "statusBar.foreground": "#e7e7e7",
+            "statusBarItem.hoverBackground": "#2f537c",
+            "titleBar.activeBackground": "#213f57",
+            "titleBar.activeForeground": "#e7e7e7",
+            "titleBar.border": "#213f57",
+            "titleBar.inactiveBackground": "#213f5799",
+            "titleBar.inactiveForeground": "#e7e7e799"
+        },
+    },
+
+    // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+    "remoteUser": "vscode"
+}

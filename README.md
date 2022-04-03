@@ -62,6 +62,24 @@ Example user settings.json on Windows:
 
 > **Important:** You will be unable to use this plugin unless you configure this setting before first use.
 
+### **composer.ignorePlatformReqs**
+
+[ Scope: Global | Optional | **Default**: `false` ]
+
+Use this setting to ignore all platform requirements (php, hhvm, lib-* and ext-*) and force the installation even if the local machine does not fulfill these.
+
+### **composer.runInTerminal**
+
+[ Scope: Global | Optional | **Default**: `true` ]
+
+Use this setting to defines whether the command is run in a terminal window or whether the output form the command is shown in the Output window. The default is to show the output in the terminal.
+
+### **composer.runQuiet**
+
+[ Scope: Global | Optional | **Default**: `false` ]
+
+Use this setting to run composer commands with the `--quiet` option.
+
 ### **composer.workingPath**
 
 [ Scope: Workspace | Optional | **Default**: `null` ]
@@ -102,6 +120,10 @@ Create an archive of this composer package.
 
 Clears composer's internal package cache.
 
+### Composer: Depends
+
+Displays detailed information about where a package is referenced.
+
 ### Composer: Diagnose
 
 Diagnoses the system to identify common errors.
@@ -110,9 +132,29 @@ Diagnoses the system to identify common errors.
 
 Dumps the autoloader.
 
+### Composer: Fund
+
+Discover how to help fund the maintenance of your dependencies.
+
+### Composer: Init
+
+The init command creates a basic composer.json file in the current directory.
+
 ### Composer: Install
 
 Installs the project dependencies from the composer.lock file if present, or falls back on the composer.json.
+
+### Composer: Licenses
+
+Shows information about licenses of dependencies.
+
+### Composer: Outdated
+
+Shows a list of installed packages that have updates available, including their current and latest versions.
+
+### Composer: Prohibits
+
+Displays detailed information about why a package cannot be installed.
 
 ### Composer: Remove
 
@@ -138,6 +180,10 @@ Show information about packages.
 
 Show a list of locally modified packages.
 
+### Composer: Suggests
+
+Show a sorted list of suggested packages.
+
 ### Composer: Update
 
 Updates your dependencies to the latest version according to composer.json, and updates the composer.lock file.
@@ -149,6 +195,14 @@ Validates a composer.json and composer.lock
 ### Composer: Version
 
 Shows the composer version.
+
+### Composer: Why
+
+Displays detailed information about where a package is referenced.
+
+### Composer: Why Not
+
+Displays detailed information about why a package cannot be installed.
 
 ## Contributing and Licensing
 

@@ -2,7 +2,7 @@
   "name": "composer",
   "displayName": "Composer",
   "description": "PHP Composer for Visual Studio Code",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "author": "Ioannis Kappas",
   "publisher": "ikappas",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "url": "https://github.com/ikappas/vscode-composer/issues"
   },
   "categories": [
-    "Languages",
+    "Programming Languages",
     "Linters"
   ],
   "keywords": [
@@ -31,24 +31,36 @@
     "multi-root ready"
   ],
   "engines": {
-    "vscode": "^1.18.0"
+    "vscode": "^1.40.0"
   },
+  "extensionKind": [
+    "workspace"
+  ],
   "activationEvents": [
     "onCommand:composer.About",
     "onCommand:composer.Archive",
     "onCommand:composer.ClearCache",
+    "onCommand:composer.Depends",
     "onCommand:composer.Diagnose",
     "onCommand:composer.DumpAutoload",
+    "onCommand:composer.Fund",
+    "onCommand:composer.Init",
     "onCommand:composer.Install",
+    "onCommand:composer.Licenses",
+    "onCommand:composer.Outdated",
+    "onCommand:composer.Prohibits",
     "onCommand:composer.Remove",
     "onCommand:composer.Require",
     "onCommand:composer.RunScript",
     "onCommand:composer.SelfUpdate",
     "onCommand:composer.Show",
     "onCommand:composer.Status",
+    "onCommand:composer.Suggests",
     "onCommand:composer.Update",
     "onCommand:composer.Validate",
-    "onCommand:composer.Version"
+    "onCommand:composer.Version",
+    "onCommand:composer.Why",
+    "onCommand:composer.WhyNot"
   ],
   "contributes": {
     "configuration": {
@@ -70,6 +82,24 @@
           "default": null,
           "description": "Path to the composer executable."
         },
+        "composer.ignorePlatformReqs": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "Ignore all platform requirements (php, hhvm, lib-* and ext-*) and force the installation even if the local machine does not fulfill these."
+        },
+        "composer.runInTerminal": {
+          "scope": "window",
+          "type": "boolean",
+          "default": true,
+          "description": "Run composer commands in a terminal, otherwise shows the output in the output panel."
+        },
+        "composer.runQuiet": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "run composer commands with the `--quiet` option."
+        },
         "composer.workingPath": {
           "scope": "resource",
           "type": [
@@ -84,88 +114,172 @@
     "jsonValidation": [
       {
         "fileMatch": "composer.json",
-        "url": "http://json.schemastore.org/composer"
+        "url": "https://raw.githubusercontent.com/composer/composer/master/res/composer-schema.json"
       }
     ],
     "commands": [
       {
         "command": "composer.About",
-        "title": "Composer: About"
+        "title": "About",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Archive",
-        "title": "Composer: Archive"
+        "title": "Archive",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.ClearCache",
-        "title": "Composer: Clear Cache"
+        "title": "Clear Cache",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Depends",
+        "title": "Depends",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Diagnose",
-        "title": "Composer: Diagnose"
+        "title": "Diagnose",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.DumpAutoload",
-        "title": "Composer: Dump Autoloader"
+        "title": "Dump Autoloader",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Fund",
+        "title": "Fund",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Init",
+        "title": "Init",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Install",
-        "title": "Composer: Install"
+        "title": "Install",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Licenses",
+        "title": "Licenses",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Outdated",
+        "title": "Outdated",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Prohibits",
+        "title": "Prohibits",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Remove",
-        "title": "Composer: Remove"
+        "title": "Remove",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Require",
-        "title": "Composer: Require"
+        "title": "Require",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.RunScript",
-        "title": "Composer: Run Script"
+        "title": "Run Script",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.SelfUpdate",
-        "title": "Composer: Self Update"
+        "title": "Self Update",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Show",
-        "title": "Composer: Show"
+        "title": "Show",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Status",
-        "title": "Composer: Status"
+        "title": "Status",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Suggests",
+        "title": "Suggests",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Update",
-        "title": "Composer: Update"
+        "title": "Update",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Validate",
-        "title": "Composer: Validate"
+        "title": "Validate",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Version",
-        "title": "Composer: Version"
+        "title": "Version",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.Why",
+        "title": "Why",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
+      },
+      {
+        "command": "composer.WhyNot",
+        "title": "WhyNot",
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       }
     ]
   },
-  "main": "./out/src/extension",
+  "main": "./out/main.js",
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -watch -p ./"
   },
   "dependencies": {
-    "iconv-lite": "^0.4.19"
+    "run-in-terminal": "^0.0.3"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.44",
-    "@types/node": "^6.0.90",
-    "@types/iconv-lite": "^0.0.1",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.1",
-    "vscode": "^1.1.6"
+    "@types/node": "^17.0.23",
+    "@types/vscode": "^1.40.0",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "eslint": "^8.12.0",
+    "typescript": "^4.6.3"
   }
 }

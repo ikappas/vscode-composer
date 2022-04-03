@@ -1,7 +1,7 @@
 # Extension specific
 out
+.vscode-test/
 *.vsix
-package-lock.json
 
 # General
 .
