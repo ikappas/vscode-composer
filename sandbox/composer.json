@@ -14,7 +14,9 @@
             "email": "ioannis@kappas.io"
         }
     ],
+    "minimum-stability": "stable",
     "require": {
+        "php": ">=8.1",
         "symfony/symfony": "6.*"
     }
 }

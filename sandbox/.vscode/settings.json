@@ -2,5 +2,7 @@
 {
 	"cSpell.enabled": false,
 	"composer.enabled": true,
-	"composer.executablePath": "/usr/local/bin/composer"
+	"composer.executablePath": "/usr/local/bin/composer",
+	"composer.runInTerminal": true,
+	"composer.runQuiet": false
 }

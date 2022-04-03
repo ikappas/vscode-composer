@@ -7,5 +7,6 @@
 /* tslint:disable:variable-name */
 export class Constants {
 	static ExtensionName = 'composer';
-	static OutputChannel = 'Composer';
+	static OutputChannelName = 'Composer';
+	static TerminalName = 'composer';
 }

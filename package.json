@@ -33,26 +33,34 @@
   "engines": {
     "vscode": "^1.40.0"
   },
-  "extensionKind": ["workspace"],
+  "extensionKind": [
+    "workspace"
+  ],
   "activationEvents": [
     "onCommand:composer.About",
     "onCommand:composer.Archive",
     "onCommand:composer.ClearCache",
+    "onCommand:composer.Depends",
     "onCommand:composer.Diagnose",
     "onCommand:composer.DumpAutoload",
     "onCommand:composer.Fund",
+    "onCommand:composer.Init",
     "onCommand:composer.Install",
     "onCommand:composer.Licenses",
     "onCommand:composer.Outdated",
+    "onCommand:composer.Prohibits",
     "onCommand:composer.Remove",
     "onCommand:composer.Require",
     "onCommand:composer.RunScript",
     "onCommand:composer.SelfUpdate",
     "onCommand:composer.Show",
     "onCommand:composer.Status",
+    "onCommand:composer.Suggests",
     "onCommand:composer.Update",
     "onCommand:composer.Validate",
-    "onCommand:composer.Version"
+    "onCommand:composer.Version",
+    "onCommand:composer.Why",
+    "onCommand:composer.WhyNot"
   ],
   "contributes": {
     "configuration": {
@@ -73,6 +81,18 @@
           ],
           "default": null,
           "description": "Path to the composer executable."
+        },
+        "composer.runInTerminal": {
+          "scope": "window",
+          "type": "boolean",
+          "default": true,
+          "description": "Run composer commands in a terminal, otherwise shows the output in the output panel."
+        },
+        "composer.runQuiet": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "run composer commands with the `--quiet` option."
         },
         "composer.workingPath": {
           "scope": "resource",
@@ -108,6 +128,11 @@
         "category": "Composer"
       },
       {
+        "command": "composer.Depends",
+        "title": "Depends",
+        "category": "Composer"
+      },
+      {
         "command": "composer.Diagnose",
         "title": "Diagnose",
         "category": "Composer"
@@ -123,6 +148,11 @@
         "category": "Composer"
       },
       {
+        "command": "composer.Init",
+        "title": "Init",
+        "category": "Composer"
+      },
+      {
         "command": "composer.Install",
         "title": "Install",
         "category": "Composer"
@@ -135,6 +165,11 @@
       {
         "command": "composer.Outdated",
         "title": "Outdated",
+        "category": "Composer"
+      },
+      {
+        "command": "composer.Prohibits",
+        "title": "Prohibits",
         "category": "Composer"
       },
       {
@@ -168,6 +203,11 @@
         "category": "Composer"
       },
       {
+        "command": "composer.Suggests",
+        "title": "Suggests",
+        "category": "Composer"
+      },
+      {
         "command": "composer.Update",
         "title": "Update",
         "category": "Composer"
@@ -181,6 +221,16 @@
         "command": "composer.Version",
         "title": "Version",
         "category": "Composer"
+      },
+      {
+        "command": "composer.Why",
+        "title": "Why",
+        "category": "Composer"
+      },
+      {
+        "command": "composer.WhyNot",
+        "title": "WhyNot",
+        "category": "Composer"
       }
     ]
   },
@@ -192,7 +242,7 @@
     "watch": "tsc -watch -p ./"
   },
   "dependencies": {
-    "iconv-lite": "^0.6.3"
+    "run-in-terminal": "^0.0.3"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",

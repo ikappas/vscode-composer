@@ -15,11 +15,23 @@ export class Strings {
 	static ComposerArchiveInput = 'Optional. Input options, package name and/or version to archive.';
 	static ComposerArchivePlaceHolder = '[options] [--] [<package>] [<version>]';
 
+	static ComposerDependsInput = 'Input options and package name';
+	static ComposerDependsPlaceHolder = '[options] [--] <package>';
+
 	static ComposerDumpAutoloadInput = 'Optional. Input options to use.';
 	static ComposerDumpAutoloadPlaceHolder = '[options]';
 
-	static ComposerShowInput = 'Composer Show Arguments';
-	static ComposerShowPlaceHolder = '[options] [--] [<package>] [<version>]';
+	static ComposerInitInput = 'Optional. Input options to use.';
+	static ComposerInitPlaceHolder = '[options]';
+
+	static ComposerShowInput = 'Optional. Input package name and version';
+	static ComposerShowPlaceHolder = '[<package>] [<version>]';
+
+	static ComposerSuggestsInput = 'Input options and the name(s) of the package(s) that you want to list suggestions from.';
+	static ComposerSuggestsPlaceHolder = '[options] [--] [<packages>]';
+
+	static ComposerProhibitsInput = 'Input options, package name and version';
+	static ComposerProhibitsPlaceHolder = '[options] [--] <package> <version>';
 
 	static ComposerRequireInput = 'Input options and the name(s) of the package(s) to add';
 	static ComposerRequirePlaceHolder = '[options] [--] [<packages>] ...';
@@ -30,6 +42,13 @@ export class Strings {
 	static ComposerRunScriptInput = '';
 	static ComposerRunScriptPlaceHolder = '[options] [--] [<script>] [<args>] ...';
 
+	static ComposerWhyInput = 'Input options and package name';
+	static ComposerWhyPlaceHolder = '[options] [--] <package>';
+
+	static ComposerWhyNotInput = 'Input options, package name and version';
+	static ComposerWhyNotPlaceHolder = '[options] [--] <package> <version>';
+
+	static CommandKilledSuccessfully = 'Command process killed successfully.';
 	static CommandCompletedSuccessfully = 'Command completed successfully.';
 	static CommandCompletedWithErrors = 'Command completed with errors.';
 

@@ -11,26 +11,36 @@ export class SettingNames {
 	static SettingsPrefix: string = Constants.ExtensionName + '.';
 	static Enabled: string = SettingNames.SettingsPrefix + 'enabled';
 	static ExecutablePath: string = SettingNames.SettingsPrefix + 'executablePath';
+	static RunInTerminal: string = SettingNames.SettingsPrefix + 'runInTerminal';
+	static RunQuiet: string = SettingNames.SettingsPrefix + 'runQuiet';
 	static WorkingPath: string = SettingNames.SettingsPrefix + 'workingPath';
 }
 
 export class ComposerSettings {
-	private _config: WorkspaceConfiguration
+	private config: WorkspaceConfiguration
 
 	constructor(scope?: ConfigurationScope) {
-		this._config = workspace.getConfiguration('', scope);
+		this.config = workspace.getConfiguration('', scope);
 	}
 
 	public get enabled(): boolean {
-		return this._config.get<boolean>(SettingNames.Enabled, true);
+		return this.config.get<boolean>(SettingNames.Enabled, true);
 	}
 
 	public get executablePath(): string {
-		return this._config.get<string>(SettingNames.ExecutablePath, undefined);
+		return this.config.get<string>(SettingNames.ExecutablePath, undefined);
+	}
+
+	public get runInTerminal(): boolean {
+		return this.config.get<boolean>(SettingNames.RunInTerminal, true);
+	}
+
+	public get runQuiet(): boolean {
+		return this.config.get<boolean>(SettingNames.RunQuiet, false);
 	}
 
 	public get workingPath(): string {
-		return this._config.get<string>(SettingNames.WorkingPath, undefined);
+		return this.config.get<string>(SettingNames.WorkingPath, undefined);
 	}
 }
 
