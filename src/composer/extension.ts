@@ -469,6 +469,11 @@ export class ComposerExtension extends Disposable {
 			args.push('--quiet');
 		}
 
+		// Opt-In the command ignores platform requirements
+		if (context.settings.ignorePlatformReqs && args[0] && ['dump-autoload', 'install', 'outdated', 'remove', 'require', 'show', 'update',].indexOf(args[0]) > -1) {
+			args.push('--ignore-platform-reqs');
+		}
+
 		workspace.saveAll().then(() => {
 			// Opt-In the command is run in a terminal
 			if (context.settings.runInTerminal) {

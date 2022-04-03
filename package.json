@@ -82,6 +82,12 @@
           "default": null,
           "description": "Path to the composer executable."
         },
+        "composer.ignorePlatformReqs": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "Ignore all platform requirements (php, hhvm, lib-* and ext-*) and force the installation even if the local machine does not fulfill these."
+        },
         "composer.runInTerminal": {
           "scope": "window",
           "type": "boolean",

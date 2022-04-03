@@ -11,6 +11,7 @@ export class SettingNames {
 	static SettingsPrefix: string = Constants.ExtensionName + '.';
 	static Enabled: string = SettingNames.SettingsPrefix + 'enabled';
 	static ExecutablePath: string = SettingNames.SettingsPrefix + 'executablePath';
+	static IgnorePlatformReqs: string = SettingNames.SettingsPrefix + 'ignorePlatformReqs';
 	static RunInTerminal: string = SettingNames.SettingsPrefix + 'runInTerminal';
 	static RunQuiet: string = SettingNames.SettingsPrefix + 'runQuiet';
 	static WorkingPath: string = SettingNames.SettingsPrefix + 'workingPath';
@@ -29,6 +30,10 @@ export class ComposerSettings {
 
 	public get executablePath(): string {
 		return this.config.get<string>(SettingNames.ExecutablePath, undefined);
+	}
+
+	public get ignorePlatformReqs(): boolean {
+		return this.config.get<boolean>(SettingNames.IgnorePlatformReqs, false);
 	}
 
 	public get runInTerminal(): boolean {
