@@ -121,122 +121,146 @@
       {
         "command": "composer.About",
         "title": "About",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Archive",
         "title": "Archive",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.ClearCache",
         "title": "Clear Cache",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Depends",
         "title": "Depends",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Diagnose",
         "title": "Diagnose",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.DumpAutoload",
         "title": "Dump Autoloader",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Fund",
         "title": "Fund",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Init",
         "title": "Init",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Install",
         "title": "Install",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Licenses",
         "title": "Licenses",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Outdated",
         "title": "Outdated",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Prohibits",
         "title": "Prohibits",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Remove",
         "title": "Remove",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Require",
         "title": "Require",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.RunScript",
         "title": "Run Script",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.SelfUpdate",
         "title": "Self Update",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Show",
         "title": "Show",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Status",
         "title": "Status",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Suggests",
         "title": "Suggests",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Update",
         "title": "Update",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Validate",
         "title": "Validate",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Version",
         "title": "Version",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.Why",
         "title": "Why",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       },
       {
         "command": "composer.WhyNot",
         "title": "WhyNot",
-        "category": "Composer"
+        "category": "Composer",
+        "enablement": "config.composer.enabled"
       }
     ]
   },
