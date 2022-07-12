@@ -75,11 +75,8 @@
         },
         "composer.executablePath": {
           "scope": "resource",
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
+          "type": "string",
+          "default": "",
           "description": "Path to the composer executable."
         },
         "composer.ignorePlatformReqs": {

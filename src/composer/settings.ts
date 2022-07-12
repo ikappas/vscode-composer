@@ -29,7 +29,7 @@ export class ComposerSettings {
 	}
 
 	public get executablePath(): string {
-		return this.config.get<string>(SettingNames.ExecutablePath, undefined);
+		return this.config.get<string>(SettingNames.ExecutablePath) || 'composer';
 	}
 
 	public get ignorePlatformReqs(): boolean {
