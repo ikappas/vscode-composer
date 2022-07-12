@@ -451,13 +451,6 @@ export class ComposerExtension extends Disposable {
 
 	protected runCommand(args: string[], context: ComposerContext, ensureComposerProject: boolean = true): void {
 
-		// Ensure that composer executable path is set.
-		if (!context.settings.executablePath) {
-			throw new ComposerError({
-				message: Strings.ComposerExecutablePathRequired
-			});
-		}
-
 		// Ensure the command is run against a composer project
 		if (ensureComposerProject && !context.isComposerProject()) {
 			window.showInformationMessage(Strings.ComposerProjectRequired);

@@ -55,7 +55,6 @@ export class Strings {
 	static WorkspaceFolderPick = 'Select workspace folder to run composer command ...';
 
 	// Errors
-	static ComposerExecutablePathRequired = 'Please set composer.executablePath in your user settings in order to to access composer features.';
 	static ComposerNotFound = 'Composer could not be found in the system.';
 	static ComposerContextRequired = 'Please open a workspace folder in order to access composer features.';
 	static ComposerProjectRequired = 'Open a folder with a composer project in order to access composer features.';
