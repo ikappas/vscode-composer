@@ -553,7 +553,7 @@ export class ComposerExtension extends Disposable {
 
 		// Ensure the command is run on the working path
 		if (context.workingPath) {
-			commandArgs.push('--working-dir', context.workingPath);
+			commandArgs.push('--working-dir', "'" + context.workingPath + "'");
 		}
 
 		this.terminal.sendText(commandArgs.join(' '));
